@@ -1,8 +1,7 @@
-package inputManagers;
+package inputParsers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -10,19 +9,20 @@ import java.util.Scanner;
 public class Servers {
     LinkedList<int[]> servers = new LinkedList<>();
 
-    public Servers(String fileName, int nbParams){
+    public Servers(String fileName){
         try {
             Scanner sc = new Scanner(new File(fileName));
 
             //We ignore 1st line of the file (cf. convention):
             sc.nextLine();
 
-            while(sc.hasNextLine()){
+            while(sc.hasNext()){
                 String currentLine = sc.nextLine();
+                currentLine = currentLine.replaceAll("\\(", "");
+                currentLine = currentLine.replaceAll("\\)", "");
 
-                String[] items = currentLine.split("[( )]*");
-                for(String s : items)
-                    System.out.print(s+",");
+                String[] items = currentLine.split(" ");
+
                 int[] serverParams = new int[items.length];
 
                 for (int i = 0; i < items.length; i++) {
@@ -30,7 +30,6 @@ public class Servers {
                 }
 
                 servers.add(serverParams);
-                sc.nextLine();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -44,7 +43,7 @@ public class Servers {
     public void print(){
         Iterator<int[]> it = servers.iterator();
 
-        System.out.println("=========== SERVERS =========== ");
+        System.out.println(">>> PRINTING INPUT SERVERS");
         while(it.hasNext()){
             int[] server = it.next();
             System.out.print("- Server #");
@@ -52,6 +51,6 @@ public class Servers {
                 System.out.print(param + " ");
             System.out.println();
         }
-        System.out.println("============================");
+        System.out.println("<<< END OF INPUT SERVERS PRINTING");
     }
 }
