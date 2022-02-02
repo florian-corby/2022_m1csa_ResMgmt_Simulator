@@ -11,16 +11,15 @@ import java.util.Scanner;
 public class Jobs {
     LinkedList<Task> tasks = new LinkedList<>();
 
-    public Jobs(String fileName, int nbParams){
+    public Jobs(String fileName){
         try {
             Scanner sc = new Scanner(new File(fileName));
 
             //We ignore 1st line of the file (cf. convention):
             sc.nextLine();
-
             while(sc.hasNextInt())
                 tasks.add(new Task(sc.nextInt(), sc.nextInt(), sc.nextInt(),  sc.nextInt(), sc.nextInt()));
-
+            sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

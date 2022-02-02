@@ -40,14 +40,15 @@ frequency, with no power cap or energy cap.
 - RMS
 
 - EDF
+
  3) Schedulers without taking dependencies into account and being energy-aware (several servers,
 several frequencies, power and energy caps)
 - FIFO (adapted to handle power/energy caps)
 
 - Energy-aware EDF (http://www.cecs.uci.edu/technical_report/TR02-24.pdf, using CSMS or CSS, your
 choice)
-4) Schedulers taking dependencies into account (several servers, one frequency)
 
+4) Schedulers taking dependencies into account (several servers, one frequency)
 - WaVefront scheduler (as early as possible)
 (https://web.archive.org/web/20160611100512/https://parasol.tamu.edu/groups/amatogroup/research/
 scheduling/scheduling_algorithms/)

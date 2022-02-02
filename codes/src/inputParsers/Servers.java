@@ -31,6 +31,7 @@ public class Servers {
 
                 servers.add(serverParams);
             }
+            sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
