@@ -4,7 +4,7 @@ job_file = "jobs.txt"
 # name of server file
 server_file = "servers.txt"
 
-#name of dependency file, if existing, other "None"
+#name of dependency file, if existing, otherwise "None"
 dependency_file = "dependencies.txt"
 
 #power cap of the whole platform, in Watts, if existing otherwise 0
