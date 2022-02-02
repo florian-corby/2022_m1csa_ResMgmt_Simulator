@@ -1,0 +1,53 @@
+% ===================================================== %
+% ===================  PREAMBULE ====================== %
+% ===================================================== %
+
+\documentclass[a4paper, french]{article}
+\usepackage{config}
+
+% ===================================================== %
+% ===================================================== %
+% ===================================================== %
+
+\begin{document}
+
+% Page de titre standarde
+\begin{titlepage}
+    \begin{flushleft}
+        \includegraphics[width=5cm]{UT3.jpg}\par
+        \centering
+        
+        \vspace{13\baselineskip}       
+        \HRule \\[0.4cm]
+
+        {\Huge 
+        Simulation of a Task Scheduler\\ (M1 CSA - Report)\par}
+        \vspace{0.4cm}
+        \HRule
+        \vfill
+      
+        Author(s): Florian Legendre\medskip \par
+        
+        \includegraphics[scale=0.7]{creative_commons.png}\par
+    \end{flushleft}
+\end{titlepage}
+
+
+% Sommaire Standard
+\newpage
+\pagestyle{empty}
+\tableofcontents
+\addtocontents{toc}{\protect\thispagestyle{empty} 
+                    \protect\pagestyle{empty}}
+\pagestyle{plain}
+
+\newpage
+
+
+
+%%% ---------------------------------------------- %%%
+%%% ------------------ Début TP ------------------ %%%
+%%% ---------------------------------------------- %%%
+
+\subfile{./content.tex}
+\end{document}
