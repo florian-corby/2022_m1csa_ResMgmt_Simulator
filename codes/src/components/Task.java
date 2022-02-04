@@ -1,4 +1,4 @@
-package scheduler;
+package components;
 
 public class Task {
     private int id;

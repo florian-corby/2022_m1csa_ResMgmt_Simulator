@@ -1,10 +1,9 @@
-package inputParsers;
+package loaders;
 
-import scheduler.Task;
+import components.Task;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 

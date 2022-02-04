@@ -1,14 +1,10 @@
 package simulator;
 
-import inputParsers.Dependencies;
-import inputParsers.Jobs;
-import inputParsers.Servers;
-import inputParsers.TestLoader;
+import loaders.Test;
 
 public class Main {
-
     public static void main(String[] args) {
-        TestLoader test = new TestLoader("../res/inputs/input1_ut3/", "test1.txt");
+        Test test = new Test("../res/inputs/input1_ut3/", "test1.txt");
         test.print();
     }
 }

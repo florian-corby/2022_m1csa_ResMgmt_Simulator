@@ -63,8 +63,7 @@ The output of the simulator : For each of the scheduler :
 
 - the obtained schedule (starting time and end time for each task, on which server, at which
 frequency). The format of the output file is :
-
-#jobID serverID starting_time ending_time frequency_used
+\#jobID serverID starting_time ending_time frequency_used
 
 -Metrics (the power along time with a graph, final energy of the schedule, missed deadline,
 makespan)
