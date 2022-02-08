@@ -1,6 +1,6 @@
-package scheduler;
+package components;
 
-public class Task {
+public class Job {
     private int id;
     private int arrivalDate;
     private int unitsOfWork;
@@ -8,8 +8,8 @@ public class Task {
     private int period;
 
     /* ============== CONSTRUCTORS ============== */
-    public Task(int id, int arrivalDate, int unitsOfWork,
-                int deadline, int period){
+    public Job(int id, int arrivalDate, int unitsOfWork,
+               int deadline, int period){
         this.id = id;
         this.arrivalDate = arrivalDate;
         this.unitsOfWork = unitsOfWork;
@@ -26,7 +26,7 @@ public class Task {
 
     /* ============== PRINTERS ============== */
     public void print(){
-        System.out.println("============== TASK #"
+        System.out.println("============== JOB #"
                              + id + " ============== ");
         System.out.println("Arrival Date: " + arrivalDate);
         System.out.println("Units of Work: " + unitsOfWork);

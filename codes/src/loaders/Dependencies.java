@@ -1,6 +1,6 @@
-package inputParsers;
+package loaders;
 
-import dataStructures.DepGraph;
+import components.DepGraph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
