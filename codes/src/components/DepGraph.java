@@ -35,7 +35,7 @@ public class DepGraph {
         System.out.println("========= DEPENDENCY GRAPH =========");
         for (int i = 0; i < graph.size(); i++) {
             if(!graph.get(i).isEmpty()) {
-                System.out.print("- Task #" + i + ": ");
+                System.out.print("- Job #" + i + ": ");
                 for (int vertex : graph.get(i)) System.out.print(vertex + " ");
                 System.out.println();
             }

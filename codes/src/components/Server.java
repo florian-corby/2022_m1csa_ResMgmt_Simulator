@@ -13,7 +13,7 @@ public class Server {
 
     /* ================ GETTERS ================ */
     public int getId() { return id; }
-    public int[] getFreq() { return frequences; }
+    public int getFreq(int idx) { return frequences[idx]; }
 
     /* ================ PRINTERS ================ */
     public void print(){

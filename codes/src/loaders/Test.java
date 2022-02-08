@@ -35,8 +35,8 @@ public class Test {
     }
 
     /* ================ GETTERS ================ */
-    public Jobs getJobs() { return jobs; }
-    public Servers getServers() { return servers; }
+    public Jobs getJobsLoader() { return jobs; }
+    public Servers getServersLoader() { return servers; }
     public Dependencies getDependencies() { return dependencies; }
     public int getPowerCap() { return powerCap; }
     public int getEnergyCap() { return energyCap; }
