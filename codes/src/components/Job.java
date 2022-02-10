@@ -24,6 +24,15 @@ public class Job {
     public int getDeadline() { return deadline; }
     public int getPeriod() { return period; }
 
+    /* ============== SETTERS ============== */
+    public void decrementMakespan(int consumedUnitsOfWork){
+        unitsOfWork -= consumedUnitsOfWork;
+        if(unitsOfWork < 0) unitsOfWork = 0;
+    }
+
+    /* ============== PREDICATES ============== */
+    public boolean isWorkDone(){ return unitsOfWork == 0; }
+
     /* ============== PRINTERS ============== */
     public void print(){
         System.out.println("============== JOB #"

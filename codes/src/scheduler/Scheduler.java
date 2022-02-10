@@ -9,10 +9,10 @@ public abstract class Scheduler {
     public Schedule getSchedule() { return schedule; }
 
     /* ================ PRINTERS ================ */
-    public void out(String fileName){
+    public void write(String fileName){
         //Clearing file if it exists:
         new File(fileName).delete();
-        schedule.out(fileName);
+        schedule.write(fileName);
     }
     public void print(){ schedule.print(); }
 }

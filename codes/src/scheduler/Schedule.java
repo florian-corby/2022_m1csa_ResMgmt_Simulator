@@ -12,7 +12,7 @@ public class Schedule {
     public ScheduleEntry getLastEntry(){ return schedule.getLast(); }
 
     /* ================ PRINTERS ================ */
-    public void out(String fileName){
+    public void write(String fileName){
         try {
             PrintWriter writer = new PrintWriter(new FileOutputStream(fileName, true));
             for(ScheduleEntry entry : schedule){
