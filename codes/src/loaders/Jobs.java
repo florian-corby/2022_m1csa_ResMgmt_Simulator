@@ -25,8 +25,12 @@ public class Jobs {
     }
 
     /* ================ GETTERS ================ */
-    public LinkedList<Job> getJobs(){ return jobs; }
-    public Job getJob(int idx){ return jobs.get(idx); }
+    public LinkedList<Job> copyJobs(){
+        LinkedList<Job> res = new LinkedList<>();
+        for(Job j : jobs) res.add(new Job(j));
+        return res;
+    }
+    public Job copyJob(int idx){ return new Job(jobs.get(idx)); }
 
     /* ================ PRINTERS ================ */
     public void print(){

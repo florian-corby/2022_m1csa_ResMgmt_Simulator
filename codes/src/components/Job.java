@@ -17,6 +17,14 @@ public class Job {
         this.period = period;
     }
 
+    public Job(Job job){
+        id = job.getId();
+        arrivalDate = job.getArrivalDate();
+        unitsOfWork = job.getUnitsOfWork();
+        deadline = job.getDeadline();
+        period = job.getPeriod();
+    }
+
     /* ============== GETTERS ============== */
     public int getId() { return id; }
     public int getArrivalDate() { return arrivalDate; }
