@@ -3,29 +3,31 @@ package scheduler;
 import components.Server;
 import components.Job;
 
-import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class FIFO extends Scheduler{
 
     /* ================ CONSTRUCTORS ================ */
-    public FIFO(LinkedList<Job> jobs, Server server){
-        Schedule schedule = getSchedule();
-        jobs.sort(Comparator.comparingInt(Job::getArrivalDate));
+    public FIFO(LinkedList<Job> jobs, Server server) {
+        super(jobs, server, 0);
+    }
 
-        //Schedule init:
-        Job firstJob = jobs.get(0);
-        double start = firstJob.getArrivalDate();
-        double end = computeEnd(firstJob, start);
-        ScheduleEntry firstEntry = new ScheduleEntry(firstJob.getId(), server.getId(), start, end, server.getFreq(0));
-        schedule.add(firstEntry);
+    /* ================ SETTERS ================ */
+    @Override
+    public void runScheduleStep(LinkedList<Job> arrivedJobs, Server server, int quantum) {
+        Iterator<Job> jobIterator = arrivedJobs.iterator();
 
-        //We schedule all the rest:
-        for(Job job : jobs.subList(1, jobs.size())){
-            start = computeStart(schedule, job);
-            end = computeEnd(job, start);
+        while(jobIterator.hasNext()){
+            Job job = jobIterator.next();
+            jobIterator.remove();
+
+            double start = computeStart(getSchedule(), job);
+            double end = start + job.getUnitsOfWork();
+
             ScheduleEntry newEntry = new ScheduleEntry(job.getId(), server.getId(), start, end, server.getFreq(0));
-            schedule.add(newEntry);
+            getSchedule().add(newEntry);
         }
     }
+
 }

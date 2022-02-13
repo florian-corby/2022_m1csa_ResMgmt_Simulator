@@ -5,6 +5,7 @@ import scheduler.EDF;
 import scheduler.FIFO;
 import scheduler.RR;
 
+
 public class Main {
     public static void main(String[] args) {
         Test test = new Test("../res/inputs/input1_ut3/", "test1.txt");
@@ -16,14 +17,14 @@ public class Main {
         fifoScheduler.print();
         System.out.println();
 
-        RR rrScheduler = new RR(test.getJobsLoader().copyJobs(), test.getServersLoader().getServer(0), 2);
+        RR rrScheduler = new RR(test.getJobsLoader().copyJobs(), test.getServersLoader().getServer(0), 30);
         rrScheduler.write("../out/rr.txt");
         rrScheduler.print();
         System.out.println();
 
-        /*EDF edfScheduler = new EDF(test.getJobsLoader().copyJobs(), test.getServersLoader().getServer(0), 2);
+        EDF edfScheduler = new EDF(test.getJobsLoader().copyJobs(), test.getServersLoader().getServer(0), 2);
         edfScheduler.write("../out/edf.txt");
         edfScheduler.print();
-        System.out.println();*/
+        System.out.println();
     }
 }
