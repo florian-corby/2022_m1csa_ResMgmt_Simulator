@@ -21,9 +21,9 @@ public class Main {
         rrScheduler.print();
         System.out.println();
 
-        EDF edfScheduler = new EDF(test.getJobsLoader().copyJobs(), test.getServersLoader().getServer(0), 2);
+        /*EDF edfScheduler = new EDF(test.getJobsLoader().copyJobs(), test.getServersLoader().getServer(0), 2);
         edfScheduler.write("../out/edf.txt");
         edfScheduler.print();
-        System.out.println();
+        System.out.println();*/
     }
 }

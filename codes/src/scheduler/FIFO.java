@@ -16,14 +16,14 @@ public class FIFO extends Scheduler{
         //Schedule init:
         Job firstJob = jobs.get(0);
         double start = firstJob.getArrivalDate();
-        double end = start + firstJob.getUnitsOfWork();
+        double end = computeEnd(firstJob, start);
         ScheduleEntry firstEntry = new ScheduleEntry(firstJob.getId(), server.getId(), start, end, server.getFreq(0));
         schedule.add(firstEntry);
 
         //We schedule all the rest:
         for(Job job : jobs.subList(1, jobs.size())){
-            start = schedule.getLastEntry().getEnd();
-            end = start + job.getUnitsOfWork();
+            start = computeStart(schedule, job);
+            end = computeEnd(job, start);
             ScheduleEntry newEntry = new ScheduleEntry(job.getId(), server.getId(), start, end, server.getFreq(0));
             schedule.add(newEntry);
         }

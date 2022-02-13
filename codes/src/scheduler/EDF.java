@@ -14,14 +14,9 @@ public class EDF extends Scheduler {
         //Schedule init:
         Job firstJob = jobs.removeFirst();
         double start = 0;
-        double end;
-        if(firstJob.getUnitsOfWork() <= quantum)
-            end = start + firstJob.getUnitsOfWork();
-        else{
-            end = start + quantum;
-            firstJob.decrementMakespan(quantum);
-            jobs.add(firstJob);
-        }
+        double end = computeEnd(firstJob, start, quantum);
+        if(!firstJob.isWorkDone()) jobs.add(firstJob);
+
         ScheduleEntry firstEntry = new ScheduleEntry(firstJob.getId(), server.getId(), start, end, server.getFreq(0));
         schedule.add(firstEntry);
         jobs.sort(Comparator.comparingDouble( (Job j) -> j.getDeadline() - schedule.getLastEntry().getEnd() ));
@@ -30,16 +25,12 @@ public class EDF extends Scheduler {
         while(!jobs.isEmpty()){
             Job job = jobs.removeFirst();
             start = schedule.getLastEntry().getEnd();
-            if(job.getUnitsOfWork() <= quantum)
-                end = start + job.getUnitsOfWork();
-            else{
-                end = start + quantum;
-                job.decrementMakespan(quantum);
-                jobs.add(job);
-                jobs.sort(Comparator.comparingDouble( (Job j) -> j.getDeadline() - schedule.getLastEntry().getEnd() ));
-            }
+            end = computeEnd(job, start, quantum);
+            if(!job.isWorkDone()) jobs.add(job);
+
             ScheduleEntry newEntry = new ScheduleEntry(job.getId(), server.getId(), start, end, server.getFreq(0));
             schedule.add(newEntry);
+            jobs.sort(Comparator.comparingDouble( (Job j) -> j.getDeadline() - schedule.getLastEntry().getEnd() ));
         }
     }
 }
