@@ -13,14 +13,18 @@ public class RR extends Scheduler {
     /* ================ SETTERS ================ */
     @Override
     public void runScheduleStep(LinkedList<Job> arrivedJobs, Server server, int quantum) {
+        Schedule schedule = getSchedule();
         Job job = arrivedJobs.removeFirst();
 
-        double start = computeStart(getSchedule(), job);
-        double end = computeEnd(job, start, quantum);
-        if(!job.isWorkDone()) arrivedJobs.add(job);
+        double start = ScheduleEntry.computeStart(schedule, job);
+        double end = ScheduleEntry.computeEnd(job, start, quantum);
+        job.decrementMakespan(quantum);
 
         ScheduleEntry newEntry = new ScheduleEntry(job.getId(), server.getId(), start, end, server.getFreq(0));
-        getSchedule().add(newEntry);
+        schedule.add(newEntry);
+
+        getArrivedJobs();
+        if(!job.isWorkDone()) arrivedJobs.add(job);
     }
 
 }

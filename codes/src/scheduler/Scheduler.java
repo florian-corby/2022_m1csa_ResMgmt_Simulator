@@ -20,7 +20,6 @@ public abstract class Scheduler {
 
         while(!jobsBatch.isEmpty() || !arrivedJobs.isEmpty()){
             if(arrivedJobs.isEmpty()) getSoonestJobs();
-            else if(!jobsBatch.isEmpty()) getArrivedJobs();
             runScheduleStep(arrivedJobs, server, quantum);
         }
     }
@@ -58,25 +57,6 @@ public abstract class Scheduler {
     /* ================ SETTERS ================ */
     public abstract void runScheduleStep(LinkedList<Job> arrivedJobs, Server server, int quantum);
 
-    public double computeStart(Schedule schedule, Job job){
-        if(schedule.getLastEntry().getEnd() < job.getArrivalDate())
-            return job.getArrivalDate();
-        else
-            return schedule.getLastEntry().getEnd();
-    }
-
-    public double computeEnd(Job job, double start, int quantum){
-        double end;
-        if(job.getUnitsOfWork() <= quantum) {
-            end = start + job.getUnitsOfWork();
-            job.decrementMakespan(job.getUnitsOfWork());
-        }
-        else{
-            end = start + quantum;
-            job.decrementMakespan(quantum);
-        }
-        return end;
-    }
 
     /* ================ PRINTERS ================ */
     public void write(String fileName){

@@ -17,7 +17,7 @@ public class Main {
         fifoScheduler.print();
         System.out.println();
 
-        RR rrScheduler = new RR(test.getJobsLoader().copyJobs(), test.getServersLoader().getServer(0), 30);
+        RR rrScheduler = new RR(test.getJobsLoader().copyJobs(), test.getServersLoader().getServer(0), 2);
         rrScheduler.write("../out/rr.txt");
         rrScheduler.print();
         System.out.println();

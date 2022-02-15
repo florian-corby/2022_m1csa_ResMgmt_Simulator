@@ -14,14 +14,17 @@ public class EDF extends Scheduler {
     @Override
     public void runScheduleStep(LinkedList<Job> arrivedJobs, Server server, int quantum) {
         Schedule schedule = getSchedule();
-        arrivedJobs.sort(Comparator.comparingDouble( (Job j) -> j.getDeadline() - schedule.getLastEntry().getEnd() ));
-
+        arrivedJobs.sort(Comparator.comparingDouble( (Job j) -> j.getArrivalDate() + j.getDeadline() ));
         Job job = arrivedJobs.removeFirst();
-        double start = schedule.getLastEntry().getEnd();
-        double end = computeEnd(job, start, quantum);
-        if(!job.isWorkDone()) arrivedJobs.add(job);
+
+        double start = ScheduleEntry.computeStart(schedule, job);
+        double end = ScheduleEntry.computeEnd(job, start, quantum);
+        job.decrementMakespan(quantum);
 
         ScheduleEntry newEntry = new ScheduleEntry(job.getId(), server.getId(), start, end, server.getFreq(0));
         schedule.add(newEntry);
+
+        getArrivedJobs();
+        if(!job.isWorkDone()) arrivedJobs.add(job);
     }
 }

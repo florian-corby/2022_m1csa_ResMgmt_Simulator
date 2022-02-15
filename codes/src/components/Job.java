@@ -43,8 +43,7 @@ public class Job {
 
     /* ============== PRINTERS ============== */
     public void print(){
-        System.out.println("============== JOB #"
-                             + id + " ============== ");
+        System.out.println("============== JOB #" + id + " ============== ");
         System.out.println("Arrival Date: " + arrivalDate);
         System.out.println("Units of Work: " + unitsOfWork);
         System.out.println("Deadline: " + deadline);
