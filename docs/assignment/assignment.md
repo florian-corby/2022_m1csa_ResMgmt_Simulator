@@ -43,12 +43,14 @@ frequency, with no power cap or energy cap.
 
  3) Schedulers without taking dependencies into account and being energy-aware (several servers,
 several frequencies, power and energy caps)
+
 - FIFO (adapted to handle power/energy caps)
 
 - Energy-aware EDF (http://www.cecs.uci.edu/technical_report/TR02-24.pdf, using CSMS or CSS, your
 choice)
 
 4) Schedulers taking dependencies into account (several servers, one frequency)
+
 - WaVefront scheduler (as early as possible)
 (https://web.archive.org/web/20160611100512/https://parasol.tamu.edu/groups/amatogroup/research/
 scheduling/scheduling_algorithms/)
@@ -65,7 +67,7 @@ The output of the simulator : For each of the scheduler :
 frequency). The format of the output file is :
 \#jobID serverID starting_time ending_time frequency_used
 
--Metrics (the power along time with a graph, final energy of the schedule, missed deadline,
+- Metrics (the power along time with a graph, final energy of the schedule, missed deadline,
 makespan)
 
 
