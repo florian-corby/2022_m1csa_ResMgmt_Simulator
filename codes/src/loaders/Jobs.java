@@ -10,14 +10,26 @@ import java.util.Scanner;
 public class Jobs {
     LinkedList<Job> jobs = new LinkedList<>();
 
-    public Jobs(String fileName){
+    public Jobs(String fileName, int nbRepeat){
         try {
             Scanner sc = new Scanner(new File(fileName));
 
             //We ignore 1st line of the file (cf. convention):
             sc.nextLine();
-            while(sc.hasNextInt())
-                jobs.add(new Job(sc.nextInt(), sc.nextInt(), sc.nextInt(),  sc.nextInt(), sc.nextInt()));
+            while(sc.hasNextInt()) {
+                Job readJob = new Job(sc.nextInt(), sc.nextInt(), sc.nextInt(), sc.nextInt(), sc.nextInt());
+                jobs.add(readJob);
+
+                if(readJob.getPeriod() > 0) {
+                    for(int i = 1; i < nbRepeat; i++) {
+                        Job prevPeriodicJob = jobs.getLast();
+                        int periodicArrivalDate = prevPeriodicJob.getArrivalDate() + prevPeriodicJob.getPeriod();
+                        Job periodicJob = new Job(prevPeriodicJob.getId(), periodicArrivalDate, prevPeriodicJob.getUnitsOfWork(),
+                                                  prevPeriodicJob.getDeadline(), prevPeriodicJob.getPeriod());
+                        jobs.add(periodicJob);
+                    }
+                }
+            }
             sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

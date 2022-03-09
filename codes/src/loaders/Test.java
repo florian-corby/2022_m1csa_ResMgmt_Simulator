@@ -23,12 +23,12 @@ public class Test {
         try {
             Properties properties = new Properties();
             properties.load(new FileInputStream(folderPath + fileName));
-            jobs = new Jobs(folderPath + properties.getProperty("job_file").replaceAll("\"", ""));
+            repeat = Integer.parseInt(properties.getProperty("repeat"));
+            jobs = new Jobs(folderPath + properties.getProperty("job_file").replaceAll("\"", ""), repeat);
             servers = new Servers(folderPath + properties.getProperty("server_file").replaceAll("\"", ""));
             dependencies = new Dependencies(folderPath + properties.getProperty("dependency_file").replaceAll("\"", ""));
             powerCap = Integer.parseInt(properties.getProperty("power_cap"));
             energyCap = Integer.parseInt(properties.getProperty("energy_cap"));
-            repeat = Integer.parseInt(properties.getProperty("repeat"));
         } catch (IOException e) {
             e.printStackTrace();
         }
