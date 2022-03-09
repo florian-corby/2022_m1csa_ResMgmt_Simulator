@@ -8,7 +8,7 @@ import scheduler.RR;
 
 public class Main {
     public static void main(String[] args) {
-        Test test = new Test("../res/inputs/input1_ut3/", "test1.txt");
+        Test test = new Test("../res/inputs/simple_input/", "test.txt");
         test.print();
         System.out.println();
 
