@@ -1,0 +1,16 @@
+Rate Monotonic
+--------------
+- How to order a periodic tasks?
+Smallest one? Arrived First (suggested)?
+
+- Ensuring a task finished before period?
+Tardiness = metric we have to display at the end.
+=> Soft real-time.
+
+
+Periodicity
+-----------
+- For all algorithms
+- Tasks come back N times and then don't come back (no hyperperiod)
+
+
