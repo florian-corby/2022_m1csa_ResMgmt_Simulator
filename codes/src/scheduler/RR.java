@@ -14,6 +14,8 @@ public class RR extends Scheduler {
     @Override
     public void runScheduleStep(LinkedList<Job> arrivedJobs, Server server, int quantum) {
         Schedule schedule = getSchedule();
+        //System.out.print(getSchedule().getLastEntry().getEnd() + ": ");
+        //System.out.println(arrivedJobs);
         Job job = arrivedJobs.removeFirst();
 
         double start = ScheduleEntry.computeStart(schedule, job);

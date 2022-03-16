@@ -14,3 +14,18 @@ Periodicity
 - Tasks come back N times and then don't come back (no hyperperiod)
 
 
+RMS
+___
+- If not schedulable according to schedulability test => we do our best anyway
+and compute tardiness/deadline misses
+
+
+EDF
+---
+- Schedulability: V = sum_{i=0}^{nb_tasks}(units_i/period_i) < 1 ?
+
+
+Schedulability
+--------------
+- Schedulability = no deadline misses, no tardiness
+

@@ -50,4 +50,10 @@ public class Job {
         System.out.println("Period: " + period);
         System.out.println("=====================================");
     }
+
+    @Override
+    public String toString() {
+        return "J" + id + "{" + arrivalDate + "a/" + unitsOfWork +
+                "u/" + deadline + "d}";
+    }
 }

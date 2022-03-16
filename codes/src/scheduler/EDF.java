@@ -15,6 +15,8 @@ public class EDF extends Scheduler {
     public void runScheduleStep(LinkedList<Job> arrivedJobs, Server server, int quantum) {
         Schedule schedule = getSchedule();
         arrivedJobs.sort(Comparator.comparingDouble( (Job j) -> j.getArrivalDate() + j.getDeadline() ));
+        //System.out.print(getSchedule().getLastEntry().getEnd() + ": ");
+        //System.out.println(arrivedJobs);
         Job job = arrivedJobs.removeFirst();
 
         double start = ScheduleEntry.computeStart(schedule, job);
