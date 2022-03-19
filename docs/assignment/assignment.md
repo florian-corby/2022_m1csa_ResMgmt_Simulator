@@ -49,7 +49,8 @@ several frequencies, power and energy caps)
 - Energy-aware EDF (http://www.cecs.uci.edu/technical_report/TR02-24.pdf, using CSMS or CSS, your
 choice)
 
-4) Schedulers taking dependencies into account (several servers, one frequency)
+4) **NOT IN 2022 :** Schedulers taking dependencies into account (several
+servers, one frequency)
 
 - WaVefront scheduler (as early as possible)
 (https://web.archive.org/web/20160611100512/https://parasol.tamu.edu/groups/amatogroup/research/
@@ -72,19 +73,21 @@ makespan)
 
 
 
-Power model : Let f be a given frequency, and fMax be the maximum frequency of a server. We call s
+__Power model :__ Let f be a given frequency, and fMax be the maximum frequency
+of a server. We call s
 the slowdown of the server when running at frequency f (e.g. s = f/fMax).
 
 If a task runs on a server, the power is approximated by : P(s) = Pmax * s^2
 
 We consider that Pmax = 200 Watts.
 
-Execution model : duration of a task is w, at frequency 1. If a server is running at frequency f,
+__Execution model :__ duration of a task is w, at frequency 1. If a server is
+running at frequency f,
 the duration is w/f.
 
 In the source file that is requested, you must comment and argue your choices.
 
-The final result is :
+__The final result is :__
 
 - a set of source files.
 
