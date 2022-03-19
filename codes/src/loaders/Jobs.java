@@ -25,7 +25,7 @@ public class Jobs {
                         Job prevPeriodicJob = jobs.getLast();
                         int periodicArrivalDate = prevPeriodicJob.getArrivalDate() + prevPeriodicJob.getPeriod();
                         Job periodicJob = new Job(prevPeriodicJob.getId(), periodicArrivalDate, prevPeriodicJob.getUnitsOfWork(),
-                                                  prevPeriodicJob.getDeadline(), prevPeriodicJob.getPeriod());
+                                                  prevPeriodicJob.getRDeadline(), prevPeriodicJob.getPeriod());
                         jobs.add(periodicJob);
                     }
                 }

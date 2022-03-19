@@ -32,7 +32,7 @@ public class RMS extends Scheduler {
             arrivedJobs.removeFirst();
         }
 
-        ScheduleEntry newEntry = new ScheduleEntry(job.getId(), server.getId(), start, end, server.getFreq(0));
+        ScheduleEntry newEntry = new ScheduleEntry(job, server, start, end, server.getFreq(0));
         schedule.add(newEntry);
         getArrivedJobs();
     }

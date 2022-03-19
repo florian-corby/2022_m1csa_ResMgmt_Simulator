@@ -28,7 +28,7 @@ public class FIFO extends Scheduler{
             double start = ScheduleEntry.computeStart(schedule, job);
             double end = start + job.getUnitsOfWork();
 
-            ScheduleEntry newEntry = new ScheduleEntry(job.getId(), server.getId(), start, end, server.getFreq(0));
+            ScheduleEntry newEntry = new ScheduleEntry(job, server, start, end, server.getFreq(0));
             schedule.add(newEntry);
         }
     }

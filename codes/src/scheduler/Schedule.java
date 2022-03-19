@@ -9,8 +9,9 @@ public class Schedule {
     private LinkedList<ScheduleEntry> schedule = new LinkedList<>();
 
     /* ================ GETTERS ================ */
+    public LinkedList<ScheduleEntry> getAllEntries(){ return schedule; }
     public ScheduleEntry getLastEntry(){
-        if(schedule.isEmpty()) return new ScheduleEntry(0, 0, 0, 0, 0);
+        if(schedule.isEmpty()) return new ScheduleEntry(null, null, 0, 0, 0);
         else return schedule.getLast();
     }
 
@@ -19,7 +20,7 @@ public class Schedule {
         try {
             PrintWriter writer = new PrintWriter(new FileOutputStream(fileName, true));
             for(ScheduleEntry entry : schedule){
-                writer.println(entry.getJobID() + " " + entry.getServerID() + " " +
+                writer.println(entry.getJob().getId() + " " + entry.getServer().getId() + " " +
                                entry.getStart() + " " + entry.getEnd() + " " + entry.getFreq());
             }
             writer.close();
@@ -28,7 +29,7 @@ public class Schedule {
         }
     }
     public void print(){
-        System.out.println("################ OUTPUT SCHEDULE ################\n");
+        System.out.println("################# OUTPUT SCHEDULE ################\n");
         System.out.println("  jobID | serverID | start | end   | frequency  ");
         System.out.println(" ---------------------------------------------- ");
         for(ScheduleEntry entry : schedule) entry.print();

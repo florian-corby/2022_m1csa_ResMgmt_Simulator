@@ -21,16 +21,17 @@ public class Job {
         id = job.getId();
         arrivalDate = job.getArrivalDate();
         unitsOfWork = job.getUnitsOfWork();
-        deadline = job.getDeadline();
+        deadline = job.getRDeadline();
         period = job.getPeriod();
     }
 
     /* ============== GETTERS ============== */
     public int getId() { return id; }
+    public int getADeadline(){ return arrivalDate + deadline; }
     public int getArrivalDate() { return arrivalDate; }
     public int getUnitsOfWork() { return unitsOfWork; }
-    public int getDeadline() { return deadline; }
     public int getPeriod() { return period; }
+    public int getRDeadline() { return deadline; }
 
     /* ============== SETTERS ============== */
     public void decrementMakespan(int consumedUnitsOfWork){

@@ -14,7 +14,7 @@ public class EDF extends Scheduler {
     @Override
     public void runScheduleStep(LinkedList<Job> arrivedJobs, Server server, int quantum) {
         Schedule schedule = getSchedule();
-        arrivedJobs.sort(Comparator.comparingDouble( (Job j) -> j.getArrivalDate() + j.getDeadline() ));
+        arrivedJobs.sort(Comparator.comparingDouble( (Job j) -> j.getADeadline() ));
 //        System.out.print(getSchedule().getLastEntry().getEnd() + ": ");
 //        System.out.println(arrivedJobs);
         Job job = arrivedJobs.getFirst();
@@ -31,7 +31,7 @@ public class EDF extends Scheduler {
             arrivedJobs.removeFirst();
         }
 
-        ScheduleEntry newEntry = new ScheduleEntry(job.getId(), server.getId(), start, end, server.getFreq(0));
+        ScheduleEntry newEntry = new ScheduleEntry(job, server, start, end, server.getFreq(0));
         schedule.add(newEntry);
         getArrivedJobs();
     }

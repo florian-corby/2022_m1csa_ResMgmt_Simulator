@@ -22,7 +22,7 @@ public class RR extends Scheduler {
         double end = ScheduleEntry.computeEnd(job, start, quantum);
         job.decrementMakespan(quantum);
 
-        ScheduleEntry newEntry = new ScheduleEntry(job.getId(), server.getId(), start, end, server.getFreq(0));
+        ScheduleEntry newEntry = new ScheduleEntry(job, server, start, end, server.getFreq(0));
         schedule.add(newEntry);
 
         getArrivedJobs();
