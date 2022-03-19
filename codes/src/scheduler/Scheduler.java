@@ -39,6 +39,11 @@ public abstract class Scheduler {
         }
     }
 
+    public int getNextArrivalDate(){
+        jobsBatch.sort(Comparator.comparingInt(Job::getArrivalDate));
+        return jobsBatch.size() == 0 ? -1 : jobsBatch.getFirst().getArrivalDate();
+    }
+
     public void getSoonestJobs(){
         Job soonestJob = jobsBatch.removeFirst();
         arrivedJobs.add(soonestJob);
