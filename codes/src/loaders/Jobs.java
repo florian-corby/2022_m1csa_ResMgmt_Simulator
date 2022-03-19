@@ -29,6 +29,8 @@ public class Jobs {
                         jobs.add(periodicJob);
                     }
                 }
+                else
+                    readJob.setAperiodic();
             }
             sc.close();
         } catch (FileNotFoundException e) {

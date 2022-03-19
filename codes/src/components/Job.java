@@ -37,6 +37,7 @@ public class Job {
         unitsOfWork -= consumedUnitsOfWork;
         if(unitsOfWork < 0) unitsOfWork = 0;
     }
+    public void setAperiodic(){ period = Integer.MAX_VALUE; }
 
     /* ============== PREDICATES ============== */
     public boolean isWorkDone(){ return unitsOfWork == 0; }
@@ -54,6 +55,6 @@ public class Job {
     @Override
     public String toString() {
         return "J" + id + "{" + arrivalDate + "a/" + unitsOfWork +
-                "u/" + deadline + "d}";
+                "u/" + deadline + "rd/"+(arrivalDate+deadline)+"ad/"+ (period == Integer.MAX_VALUE ? 0 : period) + "p}";
     }
 }
