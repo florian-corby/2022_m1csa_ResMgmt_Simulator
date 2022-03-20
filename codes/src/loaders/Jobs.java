@@ -10,14 +10,28 @@ import java.util.Scanner;
 public class Jobs {
     LinkedList<Job> jobs = new LinkedList<>();
 
-    public Jobs(String fileName){
+    public Jobs(String fileName, int nbRepeat){
         try {
             Scanner sc = new Scanner(new File(fileName));
 
             //We ignore 1st line of the file (cf. convention):
             sc.nextLine();
-            while(sc.hasNextInt())
-                jobs.add(new Job(sc.nextInt(), sc.nextInt(), sc.nextInt(),  sc.nextInt(), sc.nextInt()));
+            while(sc.hasNextInt()) {
+                Job readJob = new Job(sc.nextInt(), sc.nextInt(), sc.nextInt(), sc.nextInt(), sc.nextInt());
+                jobs.add(readJob);
+
+                if(readJob.getPeriod() > 0) {
+                    for(int i = 1; i < nbRepeat; i++) {
+                        Job prevPeriodicJob = jobs.getLast();
+                        int periodicArrivalDate = prevPeriodicJob.getArrivalDate() + prevPeriodicJob.getPeriod();
+                        Job periodicJob = new Job(prevPeriodicJob.getId(), periodicArrivalDate, prevPeriodicJob.getUnitsOfWork(),
+                                                  prevPeriodicJob.getRDeadline(), prevPeriodicJob.getPeriod());
+                        jobs.add(periodicJob);
+                    }
+                }
+                else
+                    readJob.setAperiodic();
+            }
             sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -25,8 +39,12 @@ public class Jobs {
     }
 
     /* ================ GETTERS ================ */
-    public LinkedList<Job> getJobs(){ return jobs; }
-    public Job getJob(int idx){ return jobs.get(idx); }
+    public LinkedList<Job> copyJobs(){
+        LinkedList<Job> res = new LinkedList<>();
+        for(Job j : jobs) res.add(new Job(j));
+        return res;
+    }
+    public Job copyJob(int idx){ return new Job(jobs.get(idx)); }
 
     /* ================ PRINTERS ================ */
     public void print(){

@@ -1,0 +1,31 @@
+Rate Monotonic
+--------------
+- How to order a periodic tasks?
+Smallest one? Arrived First (suggested)?
+
+- Ensuring a task finished before period?
+Tardiness = metric we have to display at the end.
+=> Soft real-time.
+
+
+Periodicity
+-----------
+- For all algorithms
+- Tasks come back N times and then don't come back (no hyperperiod)
+
+
+RMS
+___
+- If not schedulable according to schedulability test => we do our best anyway
+and compute tardiness/deadline misses
+
+
+EDF
+---
+- Schedulability: V = sum_{i=0}^{nb_tasks}(units_i/period_i) < 1 ?
+
+
+Schedulability
+--------------
+- Schedulability = no deadline misses, no tardiness
+
