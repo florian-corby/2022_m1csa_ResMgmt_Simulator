@@ -1,8 +1,11 @@
 package components;
 
+import java.util.LinkedList;
+
 public class Server {
     private int id;
     private int[] frequences;
+    private LinkedList<Job> assignedJobs = new LinkedList<>();
 
     /* ================ CONSTRUCTORS ================ */
     public Server(int id, int[] frequences){
@@ -14,6 +17,10 @@ public class Server {
     /* ================ GETTERS ================ */
     public int getId() { return id; }
     public int getFreq(int idx) { return frequences[idx]; }
+    public LinkedList<Job> getAssignedJobs() { return assignedJobs; }
+
+    /* ================ PREDICATES ================ */
+    public boolean isIdle(){ return assignedJobs.isEmpty(); }
 
     /* ================ PRINTERS ================ */
     public void print(){

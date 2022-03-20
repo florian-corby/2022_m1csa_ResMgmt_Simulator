@@ -34,6 +34,7 @@ public class Servers {
     }
 
     /* ================ GETTERS ================ */
+    public LinkedList<Server> getServers() { return servers; }
     public Server getServer(int idx){ return servers.get(idx); }
 
     /* ================ PRINTERS ================ */
