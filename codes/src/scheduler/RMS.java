@@ -25,7 +25,7 @@ public class RMS extends Scheduler {
         if(nextArrDate != -1 && (start + job.getUnitsOfWork()) > nextArrDate){
             double unitsOfWorksDone = nextArrDate - start;
             end = start + unitsOfWorksDone;
-            job.decrementMakespan((int) unitsOfWorksDone);
+            job.decrement((int) unitsOfWorksDone);
         }
         else{
             end = start + job.getUnitsOfWork();

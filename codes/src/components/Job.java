@@ -34,7 +34,7 @@ public class Job {
     public int getRDeadline() { return deadline; }
 
     /* ============== SETTERS ============== */
-    public void decrementMakespan(int consumedUnitsOfWork){
+    public void decrement(int consumedUnitsOfWork){
         unitsOfWork -= consumedUnitsOfWork;
         if(unitsOfWork < 0) unitsOfWork = 0;
     }

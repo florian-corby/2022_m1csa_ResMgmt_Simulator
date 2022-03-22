@@ -18,7 +18,7 @@ public class RR extends Scheduler {
 
         double start = ScheduleEntry.computeStart(schedule, job);
         double end = ScheduleEntry.computeEnd(job, start, quantum);
-        job.decrementMakespan(quantum);
+        job.decrement(quantum);
 
         ScheduleEntry newEntry = new ScheduleEntry(job, servers.getFirst(), start, end, servers.getFirst().getFreq(0));
         schedule.add(newEntry);

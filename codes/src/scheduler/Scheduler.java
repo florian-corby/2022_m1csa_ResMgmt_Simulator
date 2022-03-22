@@ -19,8 +19,8 @@ public abstract class Scheduler {
         servers = argServers;
         jobsBatch = argJobsBatch;
 
-        while(!jobsBatch.isEmpty() || !arrivedJobs.isEmpty()){
-            if(arrivedJobs.isEmpty()) arrivedJobs.addAll(jobsBatch.getSoonestJobs());
+        while( !(jobsBatch.isEmpty() && arrivedJobs.isEmpty() && areAllServersIdle()) ){
+            if(areAllServersIdle() && arrivedJobs.isEmpty()) arrivedJobs.addAll(jobsBatch.getSoonestJobs());
             runScheduleStep(quantum);
         }
     }
@@ -29,20 +29,24 @@ public abstract class Scheduler {
     public Schedule getSchedule(){ return schedule; }
 
     /* ================ SETTERS ================ */
-    public abstract void runScheduleStep(int quantum);
-
+    public void decrementAll(double unitsOfWorkDone){
+        for(Server s: servers){
+            if(s.isIdle()) continue;
+            s.getRunningJob().decrement((int) unitsOfWorkDone);
+            if(s.getRunningJob().getUnitsOfWork() == 0) s.removeRunningJob();
+        }
+    }
+    protected abstract void runScheduleStep(int quantum);
 
     /* ================ PREDICATES ================ */
-    public boolean areAllServersIdle(){
+    protected boolean areAllServersIdle(){
         boolean res = true;
-
         for(Server s : servers){
             if(!s.isIdle()){
                 res = false;
                 break;
             }
         }
-
         return res;
     }
 

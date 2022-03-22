@@ -18,7 +18,7 @@ public class Server {
     /* ================ GETTERS ================ */
     public int getId() { return id; }
     public int getFreq(int idx) { return frequences[idx]; }
-    public Job getRunningJob(){ return isIdle() ? null : assignedJobs.removeFirst(); }
+    public Job getRunningJob(){ return isIdle() ? null : assignedJobs.getFirst(); }
 
     /* ================ PREDICATES ================ */
     public boolean isIdle(){ return assignedJobs.isEmpty(); }
@@ -36,4 +36,5 @@ public class Server {
         assignedJobs.add(j);
         assignedJobs.sort(c);
     }
+    public void removeRunningJob(){ assignedJobs.removeFirst(); }
 }
