@@ -17,7 +17,9 @@ public class Metrics {
 
     /* ============== GETTERS ============== */
     public Set<Job> getLateJobs(){ return tardMap.keySet(); }
-    public double getMaxTardiness(){ return Collections.max(tardMap.entrySet(), HashMap.Entry.comparingByValue()).getValue(); }
+    public double getMaxTardiness(){
+        return tardMap.entrySet().size() == 0 ? 0 : Collections.max(tardMap.entrySet(), HashMap.Entry.comparingByValue()).getValue();
+    }
     public int getNbDeadlineMisses(){ return tardMap.size(); }
     public double getTotalMakespan(){ return schedule.getLastEntry().getEnd(); }
 

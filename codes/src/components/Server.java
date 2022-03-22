@@ -16,6 +16,7 @@ public class Server {
     }
 
     /* ================ GETTERS ================ */
+    public LinkedList<Job> getAssignedJobs() { return assignedJobs; }
     public int getId() { return id; }
     public int getFreq(int idx) { return frequences[idx]; }
     public Job getRunningJob(){ return isIdle() ? null : assignedJobs.getFirst(); }

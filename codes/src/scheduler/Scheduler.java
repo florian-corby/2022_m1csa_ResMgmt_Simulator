@@ -1,9 +1,6 @@
 package scheduler;
 
-import components.Job;
-import components.JobsBatch;
-import components.Schedule;
-import components.Server;
+import components.*;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -27,13 +24,39 @@ public abstract class Scheduler {
 
     /* ================ GETTERS ================ */
     public Schedule getSchedule(){ return schedule; }
+    public int getNextEventDate(){
+        int nextArrivalDate = jobsBatch.getNextArrivalDate();
+        int nextJobToFinishDate = (int) (getNextJobToFinish().getUnitsOfWork() + schedule.currentDate);
+
+        if(nextArrivalDate == -1) return nextJobToFinishDate;
+        else return Math.min(nextArrivalDate, nextJobToFinishDate);
+    }
+    public Job getNextJobToFinish(){
+        Job res = null;
+
+        for(Server s : servers){
+            if(res == null && !s.isIdle()) res = s.getRunningJob();
+            else if(!s.isIdle() && s.getRunningJob().getUnitsOfWork() < res.getUnitsOfWork())
+                res = s.getRunningJob();
+        }
+
+        return res;
+    }
 
     /* ================ SETTERS ================ */
     public void decrementAll(double unitsOfWorkDone){
+        schedule.currentDate += unitsOfWorkDone;
+
         for(Server s: servers){
             if(s.isIdle()) continue;
             s.getRunningJob().decrement((int) unitsOfWorkDone);
-            if(s.getRunningJob().getUnitsOfWork() == 0) s.removeRunningJob();
+            if(s.getRunningJob().getUnitsOfWork() == 0) {
+                double start = ScheduleEntry.computeStart(schedule, s, s.getRunningJob());
+                double end = schedule.currentDate;
+                ScheduleEntry newEntry = new ScheduleEntry(s.getRunningJob(), s, start, end, s.getFreq(0));
+                schedule.add(newEntry);
+                s.removeRunningJob();
+            }
         }
     }
     protected abstract void runScheduleStep(int quantum);
@@ -58,4 +81,10 @@ public abstract class Scheduler {
     }
 
     public void print(){ schedule.print(); }
+    public void printServers(){
+        System.out.println("Current time is " + schedule.currentDate + " : ");
+        for(Server s : servers)
+            System.out.println(s.getId() + " : " + s.getAssignedJobs());
+        System.out.println();
+    }
 }

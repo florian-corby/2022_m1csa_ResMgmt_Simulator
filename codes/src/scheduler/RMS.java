@@ -19,7 +19,7 @@ public class RMS extends Scheduler {
         arrivedJobs.sort(Comparator.comparingDouble(Job::getPeriod));
         Job job = arrivedJobs.getFirst();
 
-        double start = ScheduleEntry.computeStart(schedule, job);
+        double start = ScheduleEntry.computeStart(schedule, servers.getFirst(), job);
         double end;
         int nextArrDate = jobsBatch.getNextArrivalDate();
         if(nextArrDate != -1 && (start + job.getUnitsOfWork()) > nextArrDate){

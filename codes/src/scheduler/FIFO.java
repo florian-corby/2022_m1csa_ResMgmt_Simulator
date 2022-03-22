@@ -17,16 +17,15 @@ public class FIFO extends Scheduler{
     /* ================ SETTERS ================ */
     @Override
     public void runScheduleStep(int quantum) {
-        //System.out.print(getSchedule().getLastEntry().getEnd() + ": ");
-        //System.out.println(arrivedJobs);
         Iterator<Job> jobIterator = arrivedJobs.iterator();
 
         while(jobIterator.hasNext()){
             Job job = jobIterator.next();
             jobIterator.remove();
 
-            double start = ScheduleEntry.computeStart(schedule, job);
+            double start = ScheduleEntry.computeStart(schedule, servers.getFirst(), job);
             double end = start + job.getUnitsOfWork();
+            schedule.currentDate = end;
 
             ScheduleEntry newEntry = new ScheduleEntry(job, servers.getFirst(), start, end, servers.getFirst().getFreq(0));
             schedule.add(newEntry);

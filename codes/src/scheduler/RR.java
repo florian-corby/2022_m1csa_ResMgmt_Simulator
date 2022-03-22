@@ -16,8 +16,9 @@ public class RR extends Scheduler {
     public void runScheduleStep(int quantum) {
         Job job = arrivedJobs.removeFirst();
 
-        double start = ScheduleEntry.computeStart(schedule, job);
+        double start = ScheduleEntry.computeStart(schedule, servers.getFirst(), job);
         double end = ScheduleEntry.computeEnd(job, start, quantum);
+        schedule.currentDate = end;
         job.decrement(quantum);
 
         ScheduleEntry newEntry = new ScheduleEntry(job, servers.getFirst(), start, end, servers.getFirst().getFreq(0));
@@ -26,5 +27,4 @@ public class RR extends Scheduler {
         arrivedJobs.addAll(jobsBatch.getArrivedJobs(end));
         if(!job.isWorkDone()) arrivedJobs.add(job);
     }
-
 }
