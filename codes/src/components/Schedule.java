@@ -1,4 +1,4 @@
-package scheduler;
+package components;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -33,7 +33,7 @@ public class Schedule {
         System.out.println("  jobID | serverID | start | end   | frequency  ");
         System.out.println(" ---------------------------------------------- ");
         for(ScheduleEntry entry : schedule) entry.print();
-        System.out.println("\n##################################################");
+        System.out.println("\n##################################################\n");
     }
 
     /* ================ SETTERS ================ */

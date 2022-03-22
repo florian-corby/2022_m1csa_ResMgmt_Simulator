@@ -1,6 +1,9 @@
 package scheduler;
 
 import components.Job;
+import components.Schedule;
+import components.ScheduleEntry;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
@@ -38,6 +41,6 @@ public class Metrics {
         for(Job j : getLateJobs()){ System.out.print(j.getId() + " ");}
         System.out.println("\nMax Tardiness: " + getMaxTardiness());
         System.out.println("Total Makespan: " + getTotalMakespan());
-        System.out.println("\n##################################################");
+        System.out.println("\n##################################################\n");
     }
 }

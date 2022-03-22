@@ -1,50 +1,48 @@
 package scheduler;
 
 import components.Job;
+import components.JobsBatch;
+import components.Schedule;
 import components.Server;
-import sun.awt.image.ImageWatched;
 
 import java.io.File;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public abstract class Scheduler {
-    private Schedule schedule = new Schedule();
-    private LinkedList<Job> jobsBatch;
-    private LinkedList<Server> servers;
+    protected Schedule schedule = new Schedule();
+    protected LinkedList<Server> servers;
+    protected JobsBatch jobsBatch;
+    protected LinkedList<Job> arrivedJobs = new LinkedList<>();
 
     /* ================ CONSTRUCTORS ================ */
-    public Scheduler(LinkedList<Job> argJobsBatch, LinkedList<Server> argServers, int quantum){
+    public Scheduler(JobsBatch argJobsBatch, LinkedList<Server> argServers, int quantum){
         servers = argServers;
         jobsBatch = argJobsBatch;
-        jobsBatch.sort(Comparator.comparingInt(Job::getArrivalDate));
 
-        while(!(jobsBatch.isEmpty() && areServersIdle())) {
-            if(areServersIdle()) assignNextJob();
+        while(!jobsBatch.isEmpty() || !arrivedJobs.isEmpty()){
+            if(arrivedJobs.isEmpty()) arrivedJobs.addAll(jobsBatch.getSoonestJobs());
             runScheduleStep(quantum);
         }
     }
 
     /* ================ GETTERS ================ */
-    public LinkedList<Job> getJobsBatch() { return jobsBatch; }
-    public Schedule getSchedule() { return schedule; }
-    public LinkedList<Server> getServers() { return servers; }
+    public Schedule getSchedule(){ return schedule; }
 
-    public int getNextArrivalDate(){
-        jobsBatch.sort(Comparator.comparingInt(Job::getArrivalDate));
-        return jobsBatch.size() == 0 ? -1 : jobsBatch.getFirst().getArrivalDate();
-    }
+    /* ================ SETTERS ================ */
+    public abstract void runScheduleStep(int quantum);
+
 
     /* ================ PREDICATES ================ */
-    public boolean areServersIdle(){
+    public boolean areAllServersIdle(){
         boolean res = true;
-        for (Server s: servers) {
-            if(!s.getAssignedJobs().isEmpty()) {
+
+        for(Server s : servers){
+            if(!s.isIdle()){
                 res = false;
                 break;
             }
         }
+
         return res;
     }
 
@@ -56,8 +54,4 @@ public abstract class Scheduler {
     }
 
     public void print(){ schedule.print(); }
-
-    /* ================ SETTERS ================ */
-    public abstract void assignNextJob();
-    public abstract void runScheduleStep(int quantum);
 }

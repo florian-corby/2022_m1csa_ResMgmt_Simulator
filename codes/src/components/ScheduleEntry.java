@@ -1,7 +1,4 @@
-package scheduler;
-
-import components.Job;
-import components.Server;
+package components;
 
 public class ScheduleEntry {
     private Job job;

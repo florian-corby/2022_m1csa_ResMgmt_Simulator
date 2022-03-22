@@ -1,6 +1,7 @@
 package loaders;
 
 import components.Job;
+import components.JobsBatch;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,8 +9,9 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Jobs {
-    LinkedList<Job> jobs = new LinkedList<>();
+    LinkedList<Job> loadedJobs = new LinkedList<>();
 
+    /* ================ CONSTRUCTORS ================ */
     public Jobs(String fileName, int nbRepeat){
         try {
             Scanner sc = new Scanner(new File(fileName));
@@ -18,15 +20,15 @@ public class Jobs {
             sc.nextLine();
             while(sc.hasNextInt()) {
                 Job readJob = new Job(sc.nextInt(), sc.nextInt(), sc.nextInt(), sc.nextInt(), sc.nextInt());
-                jobs.add(readJob);
+                loadedJobs.add(readJob);
 
                 if(readJob.getPeriod() > 0) {
                     for(int i = 1; i < nbRepeat; i++) {
-                        Job prevPeriodicJob = jobs.getLast();
+                        Job prevPeriodicJob = loadedJobs.getLast();
                         int periodicArrivalDate = prevPeriodicJob.getArrivalDate() + prevPeriodicJob.getPeriod();
                         Job periodicJob = new Job(prevPeriodicJob.getId(), periodicArrivalDate, prevPeriodicJob.getUnitsOfWork(),
                                                   prevPeriodicJob.getRDeadline(), prevPeriodicJob.getPeriod());
-                        jobs.add(periodicJob);
+                        loadedJobs.add(periodicJob);
                     }
                 }
                 else
@@ -39,17 +41,12 @@ public class Jobs {
     }
 
     /* ================ GETTERS ================ */
-    public LinkedList<Job> copyJobs(){
-        LinkedList<Job> res = new LinkedList<>();
-        for(Job j : jobs) res.add(new Job(j));
-        return res;
-    }
-    public Job copyJob(int idx){ return new Job(jobs.get(idx)); }
+    public LinkedList<Job> getLoadedJobs(){ return loadedJobs; }
 
     /* ================ PRINTERS ================ */
     public void print(){
         System.out.println(">>> PRINTING INPUT TASKS");
-        for (Job task : jobs) { task.print(); }
+        for (Job task : loadedJobs) { task.print(); }
         System.out.println("<<< END OF INPUT TASKS PRINTING");
     }
 }

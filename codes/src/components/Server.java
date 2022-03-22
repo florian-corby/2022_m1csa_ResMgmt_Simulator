@@ -1,5 +1,6 @@
 package components;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class Server {
@@ -17,7 +18,7 @@ public class Server {
     /* ================ GETTERS ================ */
     public int getId() { return id; }
     public int getFreq(int idx) { return frequences[idx]; }
-    public LinkedList<Job> getAssignedJobs() { return assignedJobs; }
+    public Job getRunningJob(){ return isIdle() ? null : assignedJobs.removeFirst(); }
 
     /* ================ PREDICATES ================ */
     public boolean isIdle(){ return assignedJobs.isEmpty(); }
@@ -28,5 +29,11 @@ public class Server {
         System.out.print("Supported frequencies: ");
         for(int freq : frequences) System.out.print(freq + " ");
         System.out.println("\n===================================");
+    }
+
+    /* ================ SETTERS ================ */
+    public void add(Job j, Comparator<Job> c){
+        assignedJobs.add(j);
+        assignedJobs.sort(c);
     }
 }

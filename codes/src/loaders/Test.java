@@ -55,6 +55,6 @@ public class Test {
         System.out.println("\nPower Cap: " + powerCap);
         System.out.println("Energy Cap: " + energyCap);
         System.out.println("Nb repeat of periodic tasks: " + repeat);
-        System.out.println("##################################");
+        System.out.println("##################################\n");
     }
 }

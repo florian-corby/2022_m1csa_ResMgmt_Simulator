@@ -1,5 +1,6 @@
 package simulator;
 
+import components.JobsBatch;
 import loaders.Test;
 import scheduler.*;
 
@@ -7,39 +8,31 @@ import scheduler.*;
 public class Main {
     public static void main(String[] args) {
         Test test = new Test("../res/inputs/ut3/", "test.txt");
+        JobsBatch loadedBatch = new JobsBatch(test.getJobsLoader().getLoadedJobs());
         test.print();
-        System.out.println();
 
         System.out.println(">>> SCHEDULING USING FIFO");
-        FIFO fifoScheduler = new FIFO(test.getJobsLoader().copyJobs(), test.getServersLoader().getServers());
+        FIFO fifoScheduler = new FIFO(new JobsBatch(loadedBatch), test.getServersLoader().getServers());
         fifoScheduler.write("../out/fifo.txt");
         fifoScheduler.print();
-        System.out.println();
         new Metrics(fifoScheduler.getSchedule()).print();
-        System.out.println();
 
         System.out.println(">>> SCHEDULING USING ROUND ROBIN");
-        RR rrScheduler = new RR(test.getJobsLoader().copyJobs(), test.getServersLoader().getServers(), 2);
+        RR rrScheduler = new RR(new JobsBatch(loadedBatch), test.getServersLoader().getServers(), 2);
         rrScheduler.write("../out/rr.txt");
         rrScheduler.print();
-        System.out.println();
         new Metrics(rrScheduler.getSchedule()).print();
-        System.out.println();
 
-//        System.out.println(">>> SCHEDULING USING EARLIEST DEADLINE FIRST");
-//        EDF edfScheduler = new EDF(test.getJobsLoader().copyJobs(), test.getServersLoader().getServers(), 2);
-//        edfScheduler.write("../out/edf.txt");
-//        edfScheduler.print();
-//        System.out.println();
-//        new Metrics(edfScheduler.getSchedule()).print();
-//        System.out.println();
+        System.out.println(">>> SCHEDULING USING EARLIEST DEADLINE FIRST");
+        EDF edfScheduler = new EDF(new JobsBatch(loadedBatch), test.getServersLoader().getServers(), 2);
+        edfScheduler.write("../out/edf.txt");
+        edfScheduler.print();
+        new Metrics(edfScheduler.getSchedule()).print();
 
-//        System.out.println(">>> SCHEDULING USING RATE MONOTONIC");
-//        RMS rmsScheduler = new RMS(test.getJobsLoader().copyJobs(), test.getServersLoader().getServers());
-//        rmsScheduler.write("../out/rms.txt");
-//        rmsScheduler.print();
-//        System.out.println();
-//        new Metrics(rmsScheduler.getSchedule()).print();
-//        System.out.println();
+        System.out.println(">>> SCHEDULING USING RATE MONOTONIC");
+        RMS rmsScheduler = new RMS(new JobsBatch(loadedBatch), test.getServersLoader().getServers());
+        rmsScheduler.write("../out/rms.txt");
+        rmsScheduler.print();
+        new Metrics(rmsScheduler.getSchedule()).print();
     }
 }

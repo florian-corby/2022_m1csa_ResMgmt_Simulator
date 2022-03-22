@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Servers {
     LinkedList<Server> servers = new LinkedList<>();
 
+    /* ================ CONSTRUCTORS ================ */
     public Servers(String fileName){
         try {
             Scanner sc = new Scanner(new File(fileName));
@@ -34,8 +35,9 @@ public class Servers {
     }
 
     /* ================ GETTERS ================ */
-    public LinkedList<Server> getServers() { return servers; }
     public Server getServer(int idx){ return servers.get(idx); }
+    public LinkedList<Server> getServers(){ return servers; }
+    public LinkedList<Server> getSubset(int startIdx, int endIdx){ return (LinkedList<Server>) servers.subList(startIdx, endIdx); }
 
     /* ================ PRINTERS ================ */
     public void print(){
