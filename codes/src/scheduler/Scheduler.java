@@ -24,6 +24,7 @@ public abstract class Scheduler {
 
     /* ================ GETTERS ================ */
     public Schedule getSchedule(){ return schedule; }
+
     public int getNextEventDate(){
         int nextArrivalDate = jobsBatch.getNextArrivalDate();
         int nextJobToFinishDate = (int) (getNextJobToFinish().getUnitsOfWork() + schedule.currentDate);
@@ -31,6 +32,7 @@ public abstract class Scheduler {
         if(nextArrivalDate == -1) return nextJobToFinishDate;
         else return Math.min(nextArrivalDate, nextJobToFinishDate);
     }
+
     public Job getNextJobToFinish(){
         Job res = null;
 
@@ -44,6 +46,18 @@ public abstract class Scheduler {
     }
 
     /* ================ SETTERS ================ */
+    public boolean assignToIdle(Job j){
+        boolean isAssigned = false;
+        for(Server s : servers){
+            if(s.isIdle()){
+                s.getAssignedJobs().add(j);
+                isAssigned = true;
+                break;
+            }
+        }
+        return isAssigned;
+    }
+
     public void decrementAll(double unitsOfWorkDone){
         schedule.currentDate += unitsOfWorkDone;
 
@@ -59,6 +73,7 @@ public abstract class Scheduler {
             }
         }
     }
+
     protected abstract void runScheduleStep(int quantum);
 
     /* ================ PREDICATES ================ */
@@ -81,6 +96,7 @@ public abstract class Scheduler {
     }
 
     public void print(){ schedule.print(); }
+
     public void printServers(){
         System.out.println("Current time is " + schedule.currentDate + " : ");
         for(Server s : servers)

@@ -1,6 +1,5 @@
 package components;
 
-import java.util.Comparator;
 import java.util.LinkedList;
 
 public class Server {
@@ -33,9 +32,5 @@ public class Server {
     }
 
     /* ================ SETTERS ================ */
-    public void add(Job j, Comparator<Job> c){
-        assignedJobs.add(j);
-        assignedJobs.sort(c);
-    }
     public void removeRunningJob(){ assignedJobs.removeFirst(); }
 }

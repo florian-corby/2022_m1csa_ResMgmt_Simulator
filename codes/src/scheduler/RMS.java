@@ -2,38 +2,35 @@ package scheduler;
 
 import components.Job;
 import components.JobsBatch;
-import components.ScheduleEntry;
 import components.Server;
 
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.function.BiPredicate;
 
-public class RMS extends Scheduler {
+public class RMS extends SchedulerPriority {
+    private static final Comparator<Job> JOBS_COMPARISON_KEY = Comparator.comparingDouble(Job::getPeriod);
+    private static final BiPredicate<Job, Job> JOBS_COMPARISON_PREDICATE = (Job j1, Job j2) -> j1.getPeriod() < j2.getPeriod();
 
     /* ================ CONSTRUCTORS ================ */
-    public RMS(JobsBatch jobsBatch, LinkedList<Server> servers) { super(jobsBatch, servers, 1); }
+    public RMS(JobsBatch jobsBatch, LinkedList<Server> servers){ super(jobsBatch, servers); }
 
     /* ================ SETTERS ================ */
     @Override
-    public void runScheduleStep(int quantum) {
-        arrivedJobs.sort(Comparator.comparingDouble(Job::getPeriod));
-        Job job = arrivedJobs.getFirst();
+    protected void runScheduleStep(int quantum) {
+        arrivedJobs.sort(JOBS_COMPARISON_KEY);
+        if(areAllServersIdle() && !arrivedJobs.isEmpty()) initServers(JOBS_COMPARISON_KEY);
 
-        double start = ScheduleEntry.computeStart(schedule, servers.getFirst(), job);
-        double end;
-        int nextArrDate = jobsBatch.getNextArrivalDate();
-        if(nextArrDate != -1 && (start + job.getUnitsOfWork()) > nextArrDate){
-            double unitsOfWorksDone = nextArrDate - start;
-            end = start + unitsOfWorksDone;
-            job.decrement((int) unitsOfWorksDone);
-        }
-        else{
-            end = start + job.getUnitsOfWork();
-            arrivedJobs.removeFirst();
-        }
+        //We compute next event date:
+        int nextEventDate = getNextEventDate();
+        int unitsOfWorkDone = nextEventDate - (int) schedule.currentDate;
 
-        ScheduleEntry newEntry = new ScheduleEntry(job, servers.getFirst(), start, end, servers.getFirst().getFreq(0));
-        schedule.add(newEntry);
-        arrivedJobs.addAll(jobsBatch.getArrivedJobs(end));
+        //We decrement and deal with finished jobs:
+        decrementAll(unitsOfWorkDone);
+
+        //We deal with new arrivals:
+        arrivedJobs.addAll(jobsBatch.getArrivedJobs(nextEventDate));
+        arrivedJobs.sort(JOBS_COMPARISON_KEY);
+        assignArrivals(JOBS_COMPARISON_KEY, JOBS_COMPARISON_PREDICATE);
     }
 }
