@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Servers {
+public class ServersLoader {
     LinkedList<Server> servers = new LinkedList<>();
 
     /* ================ CONSTRUCTORS ================ */
-    public Servers(String fileName){
+    public ServersLoader(String fileName){
         try {
             Scanner sc = new Scanner(new File(fileName));
 
@@ -35,9 +35,8 @@ public class Servers {
     }
 
     /* ================ GETTERS ================ */
-    public Server getServer(int idx){ return servers.get(idx); }
     public LinkedList<Server> getServers(){ return servers; }
-    public LinkedList<Server> getSubset(int startIdx, int endIdx){ return (LinkedList<Server>) servers.subList(startIdx, endIdx); }
+    public LinkedList<Server> getServers(int startIdx, int endIdx){ return new LinkedList<>(servers.subList(startIdx, endIdx)); }
 
     /* ================ PRINTERS ================ */
     public void print(){

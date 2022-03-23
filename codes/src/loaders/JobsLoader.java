@@ -1,18 +1,17 @@
 package loaders;
 
 import components.Job;
-import components.JobsBatch;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Jobs {
+public class JobsLoader {
     LinkedList<Job> loadedJobs = new LinkedList<>();
 
     /* ================ CONSTRUCTORS ================ */
-    public Jobs(String fileName, int nbRepeat){
+    public JobsLoader(String fileName, int nbRepeat){
         try {
             Scanner sc = new Scanner(new File(fileName));
 
