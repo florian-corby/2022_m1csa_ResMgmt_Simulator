@@ -49,7 +49,7 @@ public class Job {
         System.out.println("Arrival Date: " + arrivalDate);
         System.out.println("Units of Work: " + unitsOfWork);
         System.out.println("Deadline: " + deadline);
-        System.out.println("Period: " + period);
+        System.out.println("Period: " + (period == Integer.MAX_VALUE ? 0 : period));
         System.out.println("=====================================");
     }
 
