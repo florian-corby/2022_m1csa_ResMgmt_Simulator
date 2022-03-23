@@ -19,29 +19,25 @@ public abstract class Scheduler {
 
     /* ================ GETTERS ================ */
     public Schedule getSchedule(){ return schedule; }
-
-    public int getNextEventDate(){
+    protected int getNextEventDate(){
         int nextArrivalDate = jobsBatch.getNextArrivalDate();
         int nextJobToFinishDate = (int) (getNextJobToFinish().getUnitsOfWork() + schedule.currentDate);
 
         if(nextArrivalDate == -1) return nextJobToFinishDate;
         else return Math.min(nextArrivalDate, nextJobToFinishDate);
     }
-
-    public Job getNextJobToFinish(){
+    protected Job getNextJobToFinish(){
         Job res = null;
-
         for(Server s : servers){
             if(res == null && !s.isIdle()) res = s.getRunningJob();
             else if(!s.isIdle() && s.getRunningJob().getUnitsOfWork() < res.getUnitsOfWork())
                 res = s.getRunningJob();
         }
-
         return res;
     }
 
     /* ================ SETTERS ================ */
-    public boolean assignToIdle(Job j){
+    protected boolean assignToIdle(Job j){
         boolean isAssigned = false;
         for(Server s : servers){
             if(s.isIdle()){
@@ -52,10 +48,7 @@ public abstract class Scheduler {
         }
         return isAssigned;
     }
-
-    public void decrementAll(double unitsOfWorkDone){
-        schedule.currentDate += unitsOfWorkDone;
-
+    protected void decrementAll(double unitsOfWorkDone){
         for(Server s: servers){
             if(s.isIdle()) continue;
             s.getRunningJob().decrement((int) unitsOfWorkDone);
@@ -68,14 +61,12 @@ public abstract class Scheduler {
             }
         }
     }
-
-    public void run(){
+    protected void run(){
         while( !(jobsBatch.isEmpty() && arrivedJobs.isEmpty() && areAllServersIdle()) ){
             if(areAllServersIdle() && arrivedJobs.isEmpty()) arrivedJobs.addAll(jobsBatch.getSoonestJobs());
             runScheduleStep();
         }
     }
-
     protected abstract void runScheduleStep();
 
     /* ================ PREDICATES ================ */
@@ -91,14 +82,7 @@ public abstract class Scheduler {
     }
 
     /* ================ PRINTERS ================ */
-    public void write(String fileName){
-        //Clearing file if it exists:
-        new File(fileName).delete();
-        schedule.write(fileName);
-    }
-
-    public void print(){ schedule.print(); }
-    public void printServers(){
+    protected void printServers(){
         System.out.println("Current time is " + schedule.currentDate + " : ");
         for(Server s : servers)
             System.out.println(s.getId() + " : " + s.getAssignedJobs());

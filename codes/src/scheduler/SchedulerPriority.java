@@ -55,7 +55,6 @@ public abstract class SchedulerPriority extends Scheduler {
     }
 
     protected void initServers(Comparator<Job> c){
-        schedule.currentDate = arrivedJobs.getFirst().getArrivalDate();
         Iterator<Job> jobIterator = arrivedJobs.iterator();
         int counter = 0;
 

@@ -22,11 +22,15 @@ public class RMS extends SchedulerPriority {
     @Override
     protected void runScheduleStep() {
         arrivedJobs.sort(JOBS_COMPARISON_KEY);
-        if(areAllServersIdle() && !arrivedJobs.isEmpty()) initServers(JOBS_COMPARISON_KEY);
+        if(areAllServersIdle() && !arrivedJobs.isEmpty()){
+            schedule.currentDate = arrivedJobs.getFirst().getArrivalDate();
+            initServers(JOBS_COMPARISON_KEY);
+        }
 
         //We compute next event date:
         int nextEventDate = getNextEventDate();
         int unitsOfWorkDone = nextEventDate - (int) schedule.currentDate;
+        schedule.currentDate += unitsOfWorkDone;
 
         //We decrement and deal with finished jobs:
         decrementAll(unitsOfWorkDone);

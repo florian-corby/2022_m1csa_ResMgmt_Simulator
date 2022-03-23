@@ -1,5 +1,6 @@
 package components;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -13,10 +14,8 @@ public class Schedule {
     public LinkedList<ScheduleEntry> getAllEntries(){ return schedule; }
     public LinkedList<ScheduleEntry> getAllEntries(int serverID){
         LinkedList<ScheduleEntry> res = new LinkedList<>();
-
         for(ScheduleEntry entry : schedule)
             if(entry.getServer().getId() == serverID) res.add(entry);
-
         return res;
     }
     public ScheduleEntry getLastEntry(){
@@ -30,6 +29,8 @@ public class Schedule {
 
     /* ================ PRINTERS ================ */
     public void write(String fileName){
+        //Clearing file if it exists:
+        new File(fileName).delete();
         try {
             PrintWriter writer = new PrintWriter(new FileOutputStream(fileName, true));
             for(ScheduleEntry entry : schedule){
