@@ -1,7 +1,4 @@
-package scheduler;
-
-import components.Job;
-import components.Server;
+package components;
 
 public class ScheduleEntry {
     private Job job;
@@ -32,11 +29,10 @@ public class ScheduleEntry {
     }
 
     /* ================ UTILS ================ */
-    public static double computeStart(Schedule schedule, Job job){
-        if(schedule.getLastEntry().getEnd() < job.getArrivalDate())
-            return job.getArrivalDate();
-        else
-            return schedule.getLastEntry().getEnd();
+    public static double computeStart(Schedule schedule, Server server, Job job){
+        ScheduleEntry lastServerEntry = schedule.getLastEntry(server.getId());
+        if(lastServerEntry == null || lastServerEntry.getEnd() < job.getArrivalDate()) return job.getArrivalDate();
+        else return lastServerEntry.getEnd();
     }
 
     public static double computeEnd(Job job, double start, int quantum){

@@ -6,11 +6,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Dependencies {
+public class DepLoader {
     DepGraph dependencies = new DepGraph();
 
     /* ================ CONSTRUCTORS ================ */
-    public Dependencies(String fileName){
+    public DepLoader(String fileName){
         try {
             Scanner sc = new Scanner(new File(fileName));
 

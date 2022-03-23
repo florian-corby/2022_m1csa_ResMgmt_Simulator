@@ -29,12 +29,12 @@ public class Job {
     public int getId() { return id; }
     public int getADeadline(){ return arrivalDate + deadline; }
     public int getArrivalDate() { return arrivalDate; }
-    public int getUnitsOfWork() { return unitsOfWork; }
     public int getPeriod() { return period; }
     public int getRDeadline() { return deadline; }
+    public int getUnitsOfWork() { return unitsOfWork; }
 
     /* ============== SETTERS ============== */
-    public void decrementMakespan(int consumedUnitsOfWork){
+    public void decrement(int consumedUnitsOfWork){
         unitsOfWork -= consumedUnitsOfWork;
         if(unitsOfWork < 0) unitsOfWork = 0;
     }
@@ -49,7 +49,7 @@ public class Job {
         System.out.println("Arrival Date: " + arrivalDate);
         System.out.println("Units of Work: " + unitsOfWork);
         System.out.println("Deadline: " + deadline);
-        System.out.println("Period: " + period);
+        System.out.println("Period: " + (period == Integer.MAX_VALUE ? 0 : period));
         System.out.println("=====================================");
     }
 

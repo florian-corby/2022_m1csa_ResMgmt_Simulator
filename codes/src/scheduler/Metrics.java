@@ -1,6 +1,9 @@
 package scheduler;
 
 import components.Job;
+import components.Schedule;
+import components.ScheduleEntry;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
@@ -14,7 +17,9 @@ public class Metrics {
 
     /* ============== GETTERS ============== */
     public Set<Job> getLateJobs(){ return tardMap.keySet(); }
-    public double getMaxTardiness(){ return Collections.max(tardMap.entrySet(), HashMap.Entry.comparingByValue()).getValue(); }
+    public double getMaxTardiness(){
+        return tardMap.entrySet().size() == 0 ? 0 : Collections.max(tardMap.entrySet(), HashMap.Entry.comparingByValue()).getValue();
+    }
     public int getNbDeadlineMisses(){ return tardMap.size(); }
     public double getTotalMakespan(){ return schedule.getLastEntry().getEnd(); }
 
@@ -38,6 +43,6 @@ public class Metrics {
         for(Job j : getLateJobs()){ System.out.print(j.getId() + " ");}
         System.out.println("\nMax Tardiness: " + getMaxTardiness());
         System.out.println("Total Makespan: " + getTotalMakespan());
-        System.out.println("\n##################################################");
+        System.out.println("\n##################################################\n");
     }
 }

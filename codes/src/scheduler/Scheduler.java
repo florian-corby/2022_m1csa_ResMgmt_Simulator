@@ -1,74 +1,91 @@
 package scheduler;
 
-import components.Job;
-import components.Server;
+import components.*;
 
 import java.io.File;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public abstract class Scheduler {
-    private Schedule schedule = new Schedule();
-    private LinkedList<Job> jobsBatch;
-    private LinkedList<Job> arrivedJobs = new LinkedList<>();
+    protected Schedule schedule = new Schedule();
+    protected LinkedList<Server> servers;
+    protected JobsBatch jobsBatch;
+    protected LinkedList<Job> arrivedJobs = new LinkedList<>();
 
     /* ================ CONSTRUCTORS ================ */
-    public Scheduler(LinkedList<Job> argJobsBatch, Server server, int quantum){
+    public Scheduler(JobsBatch argJobsBatch, LinkedList<Server> argServers){
+        servers = argServers;
         jobsBatch = argJobsBatch;
-        jobsBatch.sort(Comparator.comparingInt(Job::getArrivalDate));
-
-        while(!jobsBatch.isEmpty() || !arrivedJobs.isEmpty()){
-            if(arrivedJobs.isEmpty()) getSoonestJobs();
-            runScheduleStep(arrivedJobs, server, quantum);
-        }
     }
 
     /* ================ GETTERS ================ */
-    public Schedule getSchedule() { return schedule; }
+    public Schedule getSchedule(){ return schedule; }
+    protected int getNextEventDate(){
+        int nextArrivalDate = jobsBatch.getNextArrivalDate();
+        int nextJobToFinishDate = (int) (getNextJobToFinish().getUnitsOfWork() + schedule.currentDate);
 
-    public void getArrivedJobs(){
-        Iterator<Job> jobIterator = jobsBatch.iterator();
-        while(jobIterator.hasNext()){
-            Job nextJob = jobIterator.next();
-            if(nextJob.getArrivalDate() <= schedule.getLastEntry().getEnd()){
-                arrivedJobs.add(nextJob);
-                jobIterator.remove();
-            }
-            else break;
-        }
+        if(nextArrivalDate == -1) return nextJobToFinishDate;
+        else return Math.min(nextArrivalDate, nextJobToFinishDate);
     }
-
-    public int getNextArrivalDate(){
-        jobsBatch.sort(Comparator.comparingInt(Job::getArrivalDate));
-        return jobsBatch.size() == 0 ? -1 : jobsBatch.getFirst().getArrivalDate();
-    }
-
-    public void getSoonestJobs(){
-        Job soonestJob = jobsBatch.removeFirst();
-        arrivedJobs.add(soonestJob);
-
-        Iterator<Job> jobIterator = jobsBatch.iterator();
-        while(jobIterator.hasNext()){
-            Job nextJob = jobIterator.next();
-            if(nextJob.getArrivalDate() == soonestJob.getArrivalDate()){
-                arrivedJobs.add(nextJob);
-                jobIterator.remove();
-            }
-            else break;
+    protected Job getNextJobToFinish(){
+        Job res = null;
+        for(Server s : servers){
+            if(res == null && !s.isIdle()) res = s.getRunningJob();
+            else if(!s.isIdle() && s.getRunningJob().getUnitsOfWork() < res.getUnitsOfWork())
+                res = s.getRunningJob();
         }
+        return res;
     }
 
     /* ================ SETTERS ================ */
-    public abstract void runScheduleStep(LinkedList<Job> arrivedJobs, Server server, int quantum);
+    protected boolean assignToIdle(Job j){
+        boolean isAssigned = false;
+        for(Server s : servers){
+            if(s.isIdle()){
+                s.getAssignedJobs().add(j);
+                isAssigned = true;
+                break;
+            }
+        }
+        return isAssigned;
+    }
+    protected void decrementAll(double unitsOfWorkDone){
+        for(Server s: servers){
+            if(s.isIdle()) continue;
+            s.getRunningJob().decrement((int) unitsOfWorkDone);
+            if(s.getRunningJob().getUnitsOfWork() == 0) {
+                double start = ScheduleEntry.computeStart(schedule, s, s.getRunningJob());
+                double end = schedule.currentDate;
+                ScheduleEntry newEntry = new ScheduleEntry(s.getRunningJob(), s, start, end, s.getFreq(0));
+                schedule.add(newEntry);
+                s.removeRunningJob();
+            }
+        }
+    }
+    protected void run(){
+        while( !(jobsBatch.isEmpty() && arrivedJobs.isEmpty() && areAllServersIdle()) ){
+            if(areAllServersIdle() && arrivedJobs.isEmpty()) arrivedJobs.addAll(jobsBatch.getSoonestJobs());
+            runScheduleStep();
+        }
+    }
+    protected abstract void runScheduleStep();
 
-
-    /* ================ PRINTERS ================ */
-    public void write(String fileName){
-        //Clearing file if it exists:
-        new File(fileName).delete();
-        schedule.write(fileName);
+    /* ================ PREDICATES ================ */
+    protected boolean areAllServersIdle(){
+        boolean res = true;
+        for(Server s : servers){
+            if(!s.isIdle()){
+                res = false;
+                break;
+            }
+        }
+        return res;
     }
 
-    public void print(){ schedule.print(); }
+    /* ================ PRINTERS ================ */
+    protected void printServers(){
+        System.out.println("Current time is " + schedule.currentDate + " : ");
+        for(Server s : servers)
+            System.out.println(s.getId() + " : " + s.getAssignedJobs());
+        System.out.println();
+    }
 }

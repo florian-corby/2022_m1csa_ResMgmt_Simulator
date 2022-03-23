@@ -8,9 +8,9 @@ public class Test {
     private String fileName;
     private String folderPath;
 
-    private Jobs jobs;
-    private Servers servers;
-    private Dependencies dependencies;
+    private JobsLoader jobsLoader;
+    private ServersLoader serversLoader;
+    private DepLoader depLoader;
     private int powerCap = 0;
     private int energyCap = 0;
     private int repeat = 0;
@@ -24,9 +24,9 @@ public class Test {
             Properties properties = new Properties();
             properties.load(new FileInputStream(folderPath + fileName));
             repeat = Integer.parseInt(properties.getProperty("repeat"));
-            jobs = new Jobs(folderPath + properties.getProperty("job_file").replaceAll("\"", ""), repeat);
-            servers = new Servers(folderPath + properties.getProperty("server_file").replaceAll("\"", ""));
-            dependencies = new Dependencies(folderPath + properties.getProperty("dependency_file").replaceAll("\"", ""));
+            jobsLoader = new JobsLoader(folderPath + properties.getProperty("job_file").replaceAll("\"", ""), repeat);
+            serversLoader = new ServersLoader(folderPath + properties.getProperty("server_file").replaceAll("\"", ""));
+            depLoader = new DepLoader(folderPath + properties.getProperty("dependency_file").replaceAll("\"", ""));
             powerCap = Integer.parseInt(properties.getProperty("power_cap"));
             energyCap = Integer.parseInt(properties.getProperty("energy_cap"));
         } catch (IOException e) {
@@ -35,9 +35,9 @@ public class Test {
     }
 
     /* ================ GETTERS ================ */
-    public Jobs getJobsLoader() { return jobs; }
-    public Servers getServersLoader() { return servers; }
-    public Dependencies getDependencies() { return dependencies; }
+    public JobsLoader getJobsLoader() { return jobsLoader; }
+    public ServersLoader getServersLoader() { return serversLoader; }
+    public DepLoader getDepLoader() { return depLoader; }
     public int getPowerCap() { return powerCap; }
     public int getEnergyCap() { return energyCap; }
     public int getRepeat() { return repeat; }
@@ -47,14 +47,14 @@ public class Test {
         System.out.println("######## TESTS PARAMETERS ########");
         System.out.println("Folder's path: " + folderPath);
         System.out.println("Test's file name: " + fileName + "\n");
-        jobs.print();
+        jobsLoader.print();
         System.out.println();
-        servers.print();
+        serversLoader.print();
         System.out.println();
-        dependencies.print();
+        depLoader.print();
         System.out.println("\nPower Cap: " + powerCap);
         System.out.println("Energy Cap: " + energyCap);
         System.out.println("Nb repeat of periodic tasks: " + repeat);
-        System.out.println("##################################");
+        System.out.println("##################################\n");
     }
 }

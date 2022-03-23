@@ -1,5 +1,6 @@
-package scheduler;
+package components;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -7,16 +8,29 @@ import java.util.LinkedList;
 
 public class Schedule {
     private LinkedList<ScheduleEntry> schedule = new LinkedList<>();
+    public double currentDate = 0;
 
     /* ================ GETTERS ================ */
     public LinkedList<ScheduleEntry> getAllEntries(){ return schedule; }
+    public LinkedList<ScheduleEntry> getAllEntries(int serverID){
+        LinkedList<ScheduleEntry> res = new LinkedList<>();
+        for(ScheduleEntry entry : schedule)
+            if(entry.getServer().getId() == serverID) res.add(entry);
+        return res;
+    }
     public ScheduleEntry getLastEntry(){
         if(schedule.isEmpty()) return new ScheduleEntry(null, null, 0, 0, 0);
         else return schedule.getLast();
     }
+    public ScheduleEntry getLastEntry(int serverID){
+        LinkedList<ScheduleEntry> allServerEntries = getAllEntries(serverID);
+        return allServerEntries.size() == 0 ? null : allServerEntries.getLast();
+    }
 
     /* ================ PRINTERS ================ */
     public void write(String fileName){
+        //Clearing file if it exists:
+        new File(fileName).delete();
         try {
             PrintWriter writer = new PrintWriter(new FileOutputStream(fileName, true));
             for(ScheduleEntry entry : schedule){
@@ -33,11 +47,9 @@ public class Schedule {
         System.out.println("  jobID | serverID | start | end   | frequency  ");
         System.out.println(" ---------------------------------------------- ");
         for(ScheduleEntry entry : schedule) entry.print();
-        System.out.println("\n##################################################");
+        System.out.println("\n##################################################\n");
     }
 
     /* ================ SETTERS ================ */
-    public void add(ScheduleEntry entry){
-        schedule.add(entry);
-    }
+    public void add(ScheduleEntry entry){ schedule.add(entry); }
 }

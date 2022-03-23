@@ -1,8 +1,11 @@
 package components;
 
+import java.util.LinkedList;
+
 public class Server {
     private int id;
     private int[] frequences;
+    private LinkedList<Job> assignedJobs = new LinkedList<>();
 
     /* ================ CONSTRUCTORS ================ */
     public Server(int id, int[] frequences){
@@ -12,8 +15,13 @@ public class Server {
     }
 
     /* ================ GETTERS ================ */
+    public LinkedList<Job> getAssignedJobs() { return assignedJobs; }
     public int getId() { return id; }
     public int getFreq(int idx) { return frequences[idx]; }
+    public Job getRunningJob(){ return isIdle() ? null : assignedJobs.getFirst(); }
+
+    /* ================ PREDICATES ================ */
+    public boolean isIdle(){ return assignedJobs.isEmpty(); }
 
     /* ================ PRINTERS ================ */
     public void print(){
@@ -22,4 +30,7 @@ public class Server {
         for(int freq : frequences) System.out.print(freq + " ");
         System.out.println("\n===================================");
     }
+
+    /* ================ SETTERS ================ */
+    public void removeRunningJob(){ assignedJobs.removeFirst(); }
 }

@@ -1,32 +1,35 @@
 package scheduler;
 
 import components.Job;
+import components.JobsBatch;
+import components.ScheduleEntry;
 import components.Server;
-
 import java.util.LinkedList;
 
 public class RR extends Scheduler {
 
+    private final int QUANTUM;
+
     /* ================ CONSTRUCTORS ================ */
-    public RR(LinkedList<Job> jobs, Server server, int quantum){ super(jobs, server, quantum); }
+    public RR(JobsBatch jobsBatch, LinkedList<Server> servers, int quantum){
+        super(jobsBatch, servers); QUANTUM = quantum;
+        run();
+    }
 
     /* ================ SETTERS ================ */
     @Override
-    public void runScheduleStep(LinkedList<Job> arrivedJobs, Server server, int quantum) {
-        Schedule schedule = getSchedule();
-        //System.out.print(getSchedule().getLastEntry().getEnd() + ": ");
-        //System.out.println(arrivedJobs);
+    public void runScheduleStep() {
         Job job = arrivedJobs.removeFirst();
 
-        double start = ScheduleEntry.computeStart(schedule, job);
-        double end = ScheduleEntry.computeEnd(job, start, quantum);
-        job.decrementMakespan(quantum);
+        double start = ScheduleEntry.computeStart(schedule, servers.getFirst(), job);
+        double end = ScheduleEntry.computeEnd(job, start, QUANTUM);
+        schedule.currentDate = end;
+        job.decrement(QUANTUM);
 
-        ScheduleEntry newEntry = new ScheduleEntry(job, server, start, end, server.getFreq(0));
+        ScheduleEntry newEntry = new ScheduleEntry(job, servers.getFirst(), start, end, servers.getFirst().getFreq(0));
         schedule.add(newEntry);
 
-        getArrivedJobs();
+        arrivedJobs.addAll(jobsBatch.getArrivedJobs(end));
         if(!job.isWorkDone()) arrivedJobs.add(job);
     }
-
 }

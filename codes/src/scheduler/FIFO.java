@@ -1,34 +1,34 @@
 package scheduler;
 
+import components.JobsBatch;
+import components.ScheduleEntry;
 import components.Server;
 import components.Job;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class FIFO extends Scheduler{
 
     /* ================ CONSTRUCTORS ================ */
-    public FIFO(LinkedList<Job> jobs, Server server) {
-        super(jobs, server, 0);
+    public FIFO(JobsBatch jobsBatch, LinkedList<Server> servers) {
+        super(jobsBatch, servers);
+        run();
     }
 
     /* ================ SETTERS ================ */
     @Override
-    public void runScheduleStep(LinkedList<Job> arrivedJobs, Server server, int quantum) {
-        Schedule schedule = getSchedule();
-        //System.out.print(getSchedule().getLastEntry().getEnd() + ": ");
-        //System.out.println(arrivedJobs);
+    public void runScheduleStep() {
         Iterator<Job> jobIterator = arrivedJobs.iterator();
 
         while(jobIterator.hasNext()){
             Job job = jobIterator.next();
             jobIterator.remove();
 
-            double start = ScheduleEntry.computeStart(schedule, job);
+            double start = ScheduleEntry.computeStart(schedule, servers.getFirst(), job);
             double end = start + job.getUnitsOfWork();
+            schedule.currentDate = end;
 
-            ScheduleEntry newEntry = new ScheduleEntry(job, server, start, end, server.getFreq(0));
+            ScheduleEntry newEntry = new ScheduleEntry(job, servers.getFirst(), start, end, servers.getFirst().getFreq(0));
             schedule.add(newEntry);
         }
     }
