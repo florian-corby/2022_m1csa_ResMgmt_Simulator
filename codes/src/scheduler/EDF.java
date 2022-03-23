@@ -13,11 +13,14 @@ public class EDF extends SchedulerPriority {
     private static final BiPredicate<Job, Job> JOBS_COMPARISON_PREDICATE = (Job j1, Job j2) -> j1.getADeadline() < j2.getADeadline();
 
     /* ================ CONSTRUCTORS ================ */
-    public EDF(JobsBatch jobsBatch, LinkedList<Server> servers){ super(jobsBatch, servers); }
+    public EDF(JobsBatch jobsBatch, LinkedList<Server> servers){
+        super(jobsBatch, servers);
+        run();
+    }
 
     /* ================ SETTERS ================ */
     @Override
-    protected void runScheduleStep(int quantum) {
+    protected void runScheduleStep() {
         arrivedJobs.sort(JOBS_COMPARISON_KEY);
         if(areAllServersIdle() && !arrivedJobs.isEmpty()) initServers(JOBS_COMPARISON_KEY);
 

@@ -11,12 +11,13 @@ public class FIFO extends Scheduler{
 
     /* ================ CONSTRUCTORS ================ */
     public FIFO(JobsBatch jobsBatch, LinkedList<Server> servers) {
-        super(jobsBatch, servers, 0);
+        super(jobsBatch, servers);
+        run();
     }
 
     /* ================ SETTERS ================ */
     @Override
-    public void runScheduleStep(int quantum) {
+    public void runScheduleStep() {
         Iterator<Job> jobIterator = arrivedJobs.iterator();
 
         while(jobIterator.hasNext()){

@@ -29,11 +29,6 @@ public class Job {
     public int getId() { return id; }
     public int getADeadline(){ return arrivalDate + deadline; }
     public int getArrivalDate() { return arrivalDate; }
-    public double getEndDate(Schedule schedule, Server server){
-        double start = ScheduleEntry.computeStart(schedule, server, this);
-        double end = start + getUnitsOfWork();
-        return end;
-    }
     public int getPeriod() { return period; }
     public int getRDeadline() { return deadline; }
     public int getUnitsOfWork() { return unitsOfWork; }

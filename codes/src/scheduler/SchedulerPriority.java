@@ -13,7 +13,7 @@ import java.util.function.BiPredicate;
 public abstract class SchedulerPriority extends Scheduler {
     /* ================ CONSTRUCTORS ================ */
     public SchedulerPriority(JobsBatch argJobsBatch, LinkedList<Server> argServers) {
-        super(argJobsBatch, argServers, 0);
+        super(argJobsBatch, argServers);
     }
 
     /* ================ SETTERS ================ */

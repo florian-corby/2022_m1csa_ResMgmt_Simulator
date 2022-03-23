@@ -12,14 +12,9 @@ public abstract class Scheduler {
     protected LinkedList<Job> arrivedJobs = new LinkedList<>();
 
     /* ================ CONSTRUCTORS ================ */
-    public Scheduler(JobsBatch argJobsBatch, LinkedList<Server> argServers, int quantum){
+    public Scheduler(JobsBatch argJobsBatch, LinkedList<Server> argServers){
         servers = argServers;
         jobsBatch = argJobsBatch;
-
-        while( !(jobsBatch.isEmpty() && arrivedJobs.isEmpty() && areAllServersIdle()) ){
-            if(areAllServersIdle() && arrivedJobs.isEmpty()) arrivedJobs.addAll(jobsBatch.getSoonestJobs());
-            runScheduleStep(quantum);
-        }
     }
 
     /* ================ GETTERS ================ */
@@ -74,7 +69,14 @@ public abstract class Scheduler {
         }
     }
 
-    protected abstract void runScheduleStep(int quantum);
+    public void run(){
+        while( !(jobsBatch.isEmpty() && arrivedJobs.isEmpty() && areAllServersIdle()) ){
+            if(areAllServersIdle() && arrivedJobs.isEmpty()) arrivedJobs.addAll(jobsBatch.getSoonestJobs());
+            runScheduleStep();
+        }
+    }
+
+    protected abstract void runScheduleStep();
 
     /* ================ PREDICATES ================ */
     protected boolean areAllServersIdle(){
@@ -96,7 +98,6 @@ public abstract class Scheduler {
     }
 
     public void print(){ schedule.print(); }
-
     public void printServers(){
         System.out.println("Current time is " + schedule.currentDate + " : ");
         for(Server s : servers)
