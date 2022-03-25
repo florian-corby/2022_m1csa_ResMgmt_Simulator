@@ -4,20 +4,20 @@ import java.util.LinkedList;
 
 public class Server {
     private int id;
-    private int[] frequences;
+    private double[] frequences;
     private LinkedList<Job> assignedJobs = new LinkedList<>();
 
     /* ================ CONSTRUCTORS ================ */
-    public Server(int id, int[] frequences){
-        this.id = id;
-        this.frequences = new int[frequences.length];
-        System.arraycopy(frequences, 0, this.frequences, 0, frequences.length);
+    public Server(int argId, double[] argFreqs){
+        id = argId;
+        frequences = new double[argFreqs.length];
+        System.arraycopy(argFreqs, 0, frequences, 0, argFreqs.length);
     }
 
     /* ================ GETTERS ================ */
     public LinkedList<Job> getAssignedJobs() { return assignedJobs; }
     public int getId() { return id; }
-    public int getFreq(int idx) { return frequences[idx]; }
+    public double getFreq(int idx) { return frequences[idx]; }
     public Job getRunningJob(){ return isIdle() ? null : assignedJobs.getFirst(); }
 
     /* ================ PREDICATES ================ */
@@ -27,7 +27,7 @@ public class Server {
     public void print(){
         System.out.println("============ SERVER #" + this.id + " ============");
         System.out.print("Supported frequencies: ");
-        for(int freq : frequences) System.out.print(freq + " ");
+        for(double freq : frequences) System.out.print(freq + " ");
         System.out.println("\n===================================");
     }
 

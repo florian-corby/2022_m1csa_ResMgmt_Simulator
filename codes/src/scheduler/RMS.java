@@ -28,8 +28,8 @@ public class RMS extends SchedulerPriority {
         }
 
         //We compute next event date:
-        int nextEventDate = getNextEventDate();
-        int unitsOfWorkDone = nextEventDate - (int) schedule.currentDate;
+        double nextEventDate = getNextEventDate();
+        double unitsOfWorkDone = nextEventDate - schedule.currentDate;
         schedule.currentDate += unitsOfWorkDone;
 
         //We decrement and deal with finished jobs:

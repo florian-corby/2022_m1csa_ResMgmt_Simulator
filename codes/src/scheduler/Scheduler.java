@@ -2,7 +2,6 @@ package scheduler;
 
 import components.*;
 
-import java.io.File;
 import java.util.LinkedList;
 
 public abstract class Scheduler {
@@ -19,9 +18,9 @@ public abstract class Scheduler {
 
     /* ================ GETTERS ================ */
     public Schedule getSchedule(){ return schedule; }
-    protected int getNextEventDate(){
-        int nextArrivalDate = jobsBatch.getNextArrivalDate();
-        int nextJobToFinishDate = (int) (getNextJobToFinish().getUnitsOfWork() + schedule.currentDate);
+    protected double getNextEventDate(){
+        double nextArrivalDate = jobsBatch.getNextArrivalDate();
+        double nextJobToFinishDate = getNextJobToFinish().getUnitsOfWork() + schedule.currentDate;
 
         if(nextArrivalDate == -1) return nextJobToFinishDate;
         else return Math.min(nextArrivalDate, nextJobToFinishDate);

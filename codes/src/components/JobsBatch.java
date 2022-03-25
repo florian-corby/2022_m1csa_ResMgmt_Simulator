@@ -38,7 +38,7 @@ public class JobsBatch {
 
     public LinkedList<Job> getJobsList(){ return jobs; }
 
-    public int getNextArrivalDate(){
+    public double getNextArrivalDate(){
         return jobs.size() == 0 ? -1 : jobs.getFirst().getArrivalDate();
     }
 
@@ -64,5 +64,5 @@ public class JobsBatch {
     public boolean isEmpty(){ return jobs.isEmpty(); }
 
     /* ================ TOOLS ================ */
-    public void sort(){ jobs.sort(Comparator.comparingInt(Job::getArrivalDate)); }
+    public void sort(){ jobs.sort(Comparator.comparingDouble(Job::getArrivalDate)); }
 }
