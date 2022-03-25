@@ -35,6 +35,7 @@ public class Test {
     }
 
     /* ================ GETTERS ================ */
+    public String getFileName() { return fileName.substring(0, fileName.length() - 4); }
     public JobsLoader getJobsLoader() { return jobsLoader; }
     public ServersLoader getServersLoader() { return serversLoader; }
     public DepLoader getDepLoader() { return depLoader; }

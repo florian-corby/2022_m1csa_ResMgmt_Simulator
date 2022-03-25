@@ -22,16 +22,14 @@ public abstract class SchedulerPriority extends Scheduler {
         boolean isAssigned;
         Iterator<Job> jobIterator = arrivedJobs.iterator();
 
-        while(jobIterator.hasNext()){
-            if(!isAssignable) break;
-
+        while(jobIterator.hasNext() && isAssignable){
             Job j = jobIterator.next();
             isAssigned = assignToIdle(j);
 
             if(isAssigned) jobIterator.remove();
             else{
                 Server servP = getPreemptable(j, jobsComparPredicate);
-                if(servP == null) { isAssignable = false; }
+                if(servP == null) isAssignable = false;
                 else{
                     double start = ScheduleEntry.computeStart(schedule, servP, servP.getRunningJob());
                     schedule.add(new ScheduleEntry(servP.getRunningJob(), servP, start, schedule.currentDate, servP.getFreq(0)));
