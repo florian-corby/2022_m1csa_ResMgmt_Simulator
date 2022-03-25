@@ -5,6 +5,8 @@ import loaders.ServersLoader;
 import loaders.Test;
 import scheduler.*;
 
+import java.io.IOException;
+
 
 public class MonoServer {
     public MonoServer(Test test){
@@ -12,7 +14,7 @@ public class MonoServer {
         System.out.println("%%%%%%%%%%%%%%%%%%% MONOSERVER %%%%%%%%%%%%%%%%%%%");
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
 
-        // ============================================================================================
+        // =================================== OUTPUT FILES GENERATION ===========================================
         JobsBatch loadedBatch = new JobsBatch(test.getJobsLoader().getLoadedJobs());
         ServersLoader serversLoader = test.getServersLoader();
 
@@ -39,7 +41,17 @@ public class MonoServer {
         rmsScheduler.getSchedule().write("../out/" + test.getFileName() + "_monoServer_rms.txt");
         rmsScheduler.getSchedule().print();
         new Metrics(rmsScheduler.getSchedule()).print();
-        // ============================================================================================
+
+        // =================================== PYTHON GRAPHS GENERATION ===========================================
+        String plotterCmd = "python3 ../lib/ut3/savePlot.py ";
+        try {
+            Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_monoServer_fifo.txt");
+            Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_monoServer_rr.txt");
+            Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_monoServer_edf.txt");
+            Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_monoServer_rms.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");

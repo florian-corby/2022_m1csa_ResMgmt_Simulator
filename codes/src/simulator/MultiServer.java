@@ -4,6 +4,8 @@ import components.JobsBatch;
 import loaders.Test;
 import scheduler.*;
 
+import java.io.IOException;
+
 
 public class MultiServer {
     public MultiServer(Test test){
@@ -11,7 +13,7 @@ public class MultiServer {
         System.out.println("%%%%%%%%%%%%%%%%%% MULTISERVER %%%%%%%%%%%%%%%%%%%");
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
 
-        // ============================================================================================
+        // =================================== OUTPUT FILES GENERATION ===========================================
         JobsBatch loadedBatch = new JobsBatch(test.getJobsLoader().getLoadedJobs());
 
         System.out.println(">>> SCHEDULING USING FIFO");
@@ -37,7 +39,17 @@ public class MultiServer {
         rmsScheduler.getSchedule().write("../out/" + test.getFileName() + "_multiServer_rms.txt");
         rmsScheduler.getSchedule().print();
         new Metrics(rmsScheduler.getSchedule()).print();
-        // ============================================================================================
+
+        // =================================== PYTHON GRAPHS GENERATION ===========================================
+        String plotterCmd = "python3 ../lib/ut3/savePlot.py ";
+        try {
+            Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_multiServer_fifo.txt");
+            Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_multiServer_rr.txt");
+            Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_multiServer_edf.txt");
+            Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_multiServer_rms.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
