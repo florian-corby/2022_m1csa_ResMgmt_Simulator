@@ -1,7 +1,6 @@
 package components;
 
 import scheduler.Scheduler;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -16,6 +15,7 @@ public class ServersManager {
     }
 
     /* ================ GETTERS ================ */
+    public double getPow(){ double res = 0; for(Server s : servers) res += s.getCurrPow(); return res; }
     public Job getNextJobToFinish(){
         Job res = null;
         for(Server s : servers){
@@ -39,6 +39,7 @@ public class ServersManager {
         }
         return isAssigned;
     }
+
     public void decrementAll(double unitsOfWorkDone){
         for(Server s: servers){
             if(s.isIdle()) continue;
@@ -77,7 +78,5 @@ public class ServersManager {
     }
 
     /* ================ PRINTERS ================ */
-    public void printServers(){
-        for(Server s : servers) System.out.println(s.getId() + " : " + s.getAssignedJobs());
-    }
+    public void printServers(){ for(Server s : servers) System.out.println(s.getId() + " : " + s.getAssignedJobs()); }
 }
