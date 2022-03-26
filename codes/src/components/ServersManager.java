@@ -16,12 +16,12 @@ public class ServersManager {
 
     /* ================ GETTERS ================ */
     public double getPow(){ double res = 0; for(Server s : servers) res += s.getCurrPow(); return res; }
-    public Job getNextJobToFinish(){
-        Job res = null;
+    public Server getNextServerToFinish(){
+        Server res = null;
         for(Server s : servers){
-            if(res == null && !s.isIdle()) res = s.getRunningJob();
-            else if(!s.isIdle() && s.getRunningJob().getUnitsOfWork() < res.getUnitsOfWork())
-                res = s.getRunningJob();
+            if(res == null && !s.isIdle()) res = s;
+            else if(!s.isIdle() && s.getDuration() < res.getDuration())
+                res = s;
         }
         return res;
     }
@@ -40,10 +40,10 @@ public class ServersManager {
         return isAssigned;
     }
 
-    public void decrementAll(double unitsOfWorkDone){
+    public void decrementAll(double time){
         for(Server s: servers){
             if(s.isIdle()) continue;
-            s.getRunningJob().decrement(unitsOfWorkDone);
+            s.getRunningJob().decrement(time * s.getCurrFreq());
             if(s.getRunningJob().getUnitsOfWork() == 0) {
                 double start = ScheduleEntry.computeStart(scheduler.getSchedule(), s, s.getRunningJob());
                 double end = scheduler.getSchedule().currentDate;
@@ -56,12 +56,12 @@ public class ServersManager {
 
     public void initServers(){
         Iterator<Job> jobIterator = scheduler.getArrivedJ().iterator();
-        int counter = 0;
-
-        while(jobIterator.hasNext() && counter < servers.size()){
-            servers.get(counter).getAssignedJobs().add(jobIterator.next());
-            jobIterator.remove();
-            counter++;
+        for(Server s : servers){
+            if(jobIterator.hasNext()){
+                s.getAssignedJobs().add(jobIterator.next());
+                jobIterator.remove();
+            }
+            s.setCurrFreq(0);
         }
     }
 

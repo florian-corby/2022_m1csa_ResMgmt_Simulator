@@ -23,7 +23,7 @@ public abstract class Scheduler {
     public LinkedList<Job> getArrivedJ() { return arrivedJ; }
     protected double getNextEventDate(){
         double nextArrivalDate = jobsB.getNextArrivalDate();
-        double nextJobToFinishDate = schedule.currentDate + serversM.getNextJobToFinish().getUnitsOfWork();
+        double nextJobToFinishDate = schedule.currentDate + serversM.getNextServerToFinish().getDuration();
 
         if(nextArrivalDate == -1) return nextJobToFinishDate;
         else return Math.min(nextArrivalDate, nextJobToFinishDate);
