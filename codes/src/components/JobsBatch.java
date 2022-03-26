@@ -9,13 +9,12 @@ public class JobsBatch {
 
     /* ================ CONSTRUCTORS ================ */
     public JobsBatch(LinkedList<Job> argJobs){
-        jobs = argJobs;
+        for(Job j : argJobs) jobs.add(new Job(j));
         sort();
     }
 
     public JobsBatch(JobsBatch batchToCopy){
-        for(Job j : batchToCopy.getJobsList())
-            jobs.add(new Job(j));
+        for(Job j : batchToCopy.getJobsList()) jobs.add(new Job(j));
         sort();
     }
 

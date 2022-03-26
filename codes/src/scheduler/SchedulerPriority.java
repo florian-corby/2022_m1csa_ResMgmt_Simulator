@@ -1,19 +1,18 @@
 package scheduler;
 
 import components.Job;
-import components.JobsBatch;
 import components.ScheduleEntry;
 import components.Server;
+import loaders.Test;
 
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.function.BiPredicate;
 
 public abstract class SchedulerPriority extends Scheduler {
     /* ================ CONSTRUCTORS ================ */
-    public SchedulerPriority(JobsBatch argJobsBatch, LinkedList<Server> argServers) {
-        super(argJobsBatch, argServers);
+    public SchedulerPriority(Test test, int nbServers) {
+        super(test, nbServers);
     }
 
     /* ================ SETTERS ================ */

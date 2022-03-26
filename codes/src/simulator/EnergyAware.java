@@ -1,9 +1,7 @@
 package simulator;
 
-import components.JobsBatch;
 import loaders.Test;
 import scheduler.*;
-
 import java.io.IOException;
 
 public class EnergyAware {
@@ -11,18 +9,17 @@ public class EnergyAware {
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         System.out.println("%%%%%%%%%%%%%%%%%% ENERGY AWARE %%%%%%%%%%%%%%%%%%");
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
+        int nbServers = test.getServersLoader().getServers().size();
 
         // =================================== OUTPUT FILES GENERATION ===========================================
-        JobsBatch loadedBatch = new JobsBatch(test.getJobsLoader().getLoadedJobs());
-
         System.out.println(">>> SCHEDULING USING FIFO");
-        FIFOe fifoScheduler = new FIFOe(new JobsBatch(loadedBatch), test.getServersLoader().getServers());
+        FIFOe fifoScheduler = new FIFOe(test, nbServers);
         fifoScheduler.getSchedule().write("../out/" + test.getFileName() + "_energyAware_fifo.txt");
         fifoScheduler.getSchedule().print();
         new Metrics(fifoScheduler.getSchedule()).print();
 
 //        System.out.println(">>> SCHEDULING USING EARLIEST DEADLINE FIRST");
-//        EDF edfScheduler = new EDF(new JobsBatch(loadedBatch), test.getServersLoader().getServers());
+//        EDF edfScheduler = new EDF(test, nbServers);
 //        edfScheduler.getSchedule().write("../out/" + test.getFileName() + "_multiServer_edf.txt");
 //        edfScheduler.getSchedule().print();
 //        new Metrics(edfScheduler.getSchedule()).print();

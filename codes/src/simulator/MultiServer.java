@@ -1,6 +1,5 @@
 package simulator;
 
-import components.JobsBatch;
 import loaders.Test;
 import scheduler.*;
 
@@ -12,30 +11,29 @@ public class MultiServer {
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         System.out.println("%%%%%%%%%%%%%%%%%% MULTISERVER %%%%%%%%%%%%%%%%%%%");
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
+        int nbServers = test.getServersLoader().getServers().size();
 
         // =================================== OUTPUT FILES GENERATION ===========================================
-        JobsBatch loadedBatch = new JobsBatch(test.getJobsLoader().getLoadedJobs());
-
         System.out.println(">>> SCHEDULING USING FIFO");
-        FIFO fifoScheduler = new FIFO(new JobsBatch(loadedBatch), test.getServersLoader().getServers());
+        FIFO fifoScheduler = new FIFO(test, nbServers);
         fifoScheduler.getSchedule().write("../out/" + test.getFileName() + "_multiServer_fifo.txt");
         fifoScheduler.getSchedule().print();
         new Metrics(fifoScheduler.getSchedule()).print();
 
         System.out.println(">>> SCHEDULING USING ROUND ROBIN");
-        RR rrScheduler = new RR(new JobsBatch(loadedBatch), test.getServersLoader().getServers(), 2);
+        RR rrScheduler = new RR(test, nbServers, 2);
         rrScheduler.getSchedule().write("../out/" + test.getFileName() + "_multiServer_rr.txt");
         rrScheduler.getSchedule().print();
         new Metrics(rrScheduler.getSchedule()).print();
 
         System.out.println(">>> SCHEDULING USING EARLIEST DEADLINE FIRST");
-        EDF edfScheduler = new EDF(new JobsBatch(loadedBatch), test.getServersLoader().getServers());
+        EDF edfScheduler = new EDF(test, nbServers);
         edfScheduler.getSchedule().write("../out/" + test.getFileName() + "_multiServer_edf.txt");
         edfScheduler.getSchedule().print();
         new Metrics(edfScheduler.getSchedule()).print();
 
         System.out.println(">>> SCHEDULING USING RATE MONOTONIC");
-        RMS rmsScheduler = new RMS(new JobsBatch(loadedBatch), test.getServersLoader().getServers());
+        RMS rmsScheduler = new RMS(test, nbServers);
         rmsScheduler.getSchedule().write("../out/" + test.getFileName() + "_multiServer_rms.txt");
         rmsScheduler.getSchedule().print();
         new Metrics(rmsScheduler.getSchedule()).print();

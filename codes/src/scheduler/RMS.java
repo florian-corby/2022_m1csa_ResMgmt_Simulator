@@ -1,11 +1,8 @@
 package scheduler;
 
 import components.Job;
-import components.JobsBatch;
-import components.Server;
-
+import loaders.Test;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.function.BiPredicate;
 
 public class RMS extends SchedulerPriority {
@@ -13,8 +10,8 @@ public class RMS extends SchedulerPriority {
     private static final BiPredicate<Job, Job> JOBS_COMPARISON_PREDICATE = (Job j1, Job j2) -> j1.getPeriod() < j2.getPeriod();
 
     /* ================ CONSTRUCTORS ================ */
-    public RMS(JobsBatch jobsBatch, LinkedList<Server> servers){
-        super(jobsBatch, servers);
+    public RMS(Test test, int nbServers){
+        super(test, nbServers);
         run();
     }
 

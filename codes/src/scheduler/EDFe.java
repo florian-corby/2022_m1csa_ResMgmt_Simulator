@@ -1,11 +1,9 @@
 package scheduler;
 
 import components.Job;
-import components.JobsBatch;
-import components.Server;
+import loaders.Test;
 
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.function.BiPredicate;
 
 public class EDFe extends SchedulerPriority{
@@ -13,8 +11,8 @@ public class EDFe extends SchedulerPriority{
     private static final BiPredicate<Job, Job> JOBS_COMPARISON_PREDICATE = (Job j1, Job j2) -> j1.getADeadline() < j2.getADeadline();
 
     /* ================ CONSTRUCTORS ================ */
-    public EDFe(JobsBatch jobsBatch, LinkedList<Server> servers){
-        super(jobsBatch, servers);
+    public EDFe(Test test, int nbServers){
+        super(test, nbServers);
         run();
     }
 

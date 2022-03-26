@@ -1,19 +1,23 @@
 package scheduler;
 
 import components.*;
+import loaders.Test;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public abstract class Scheduler {
     protected Schedule schedule = new Schedule();
     protected LinkedList<Server> servers;
+    protected double sysPowMax;
     protected JobsBatch jobsBatch;
     protected LinkedList<Job> arrivedJobs = new LinkedList<>();
 
     /* ================ CONSTRUCTORS ================ */
-    public Scheduler(JobsBatch argJobsBatch, LinkedList<Server> argServers){
-        servers = argServers;
-        jobsBatch = argJobsBatch;
+    public Scheduler(Test test, int nbServers){
+        servers = test.getServersLoader().getServers(0, nbServers);
+        sysPowMax = test.getPowerCap();
+        jobsBatch = new JobsBatch(test.getJobsLoader().getLoadedJobs());
     }
 
     /* ================ GETTERS ================ */

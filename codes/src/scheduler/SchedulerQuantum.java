@@ -1,16 +1,15 @@
 package scheduler;
 
 import components.Job;
-import components.JobsBatch;
 import components.Server;
+import loaders.Test;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
 public abstract class SchedulerQuantum extends Scheduler {
     /* ================ CONSTRUCTORS ================ */
-    public SchedulerQuantum(JobsBatch argJobsBatch, LinkedList<Server> argServers) {
-        super(argJobsBatch, argServers);
+    public SchedulerQuantum(Test test, int nbServers) {
+        super(test, nbServers);
     }
 
     /* ================ SETTERS ================ */

@@ -1,18 +1,17 @@
 package scheduler;
 
 import components.Job;
-import components.JobsBatch;
 import components.ScheduleEntry;
-import components.Server;
-import java.util.LinkedList;
+import loaders.Test;
+
 
 public class RR extends Scheduler {
 
     private final int QUANTUM;
 
     /* ================ CONSTRUCTORS ================ */
-    public RR(JobsBatch jobsBatch, LinkedList<Server> servers, int quantum){
-        super(jobsBatch, servers); QUANTUM = quantum;
+    public RR(Test test, int nbServers, int quantum){
+        super(test, nbServers); QUANTUM = quantum;
         run();
     }
 
