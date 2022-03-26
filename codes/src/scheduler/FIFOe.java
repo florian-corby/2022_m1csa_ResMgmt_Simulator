@@ -1,15 +1,13 @@
 package scheduler;
 
 import components.JobsBatch;
-import components.ScheduleEntry;
 import components.Server;
-import components.Job;
-import java.util.Iterator;
+
 import java.util.LinkedList;
 
-public class FIFO extends SchedulerQuantum{
+public class FIFOe extends SchedulerQuantum {
     /* ================ CONSTRUCTORS ================ */
-    public FIFO(JobsBatch jobsBatch, LinkedList<Server> servers) {
+    public FIFOe(JobsBatch jobsBatch, LinkedList<Server> servers) {
         super(jobsBatch, servers);
         run();
     }

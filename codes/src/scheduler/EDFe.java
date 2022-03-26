@@ -1,22 +1,27 @@
 package scheduler;
 
-import components.JobsBatch;
-import components.ScheduleEntry;
-import components.Server;
 import components.Job;
-import java.util.Iterator;
-import java.util.LinkedList;
+import components.JobsBatch;
+import components.Server;
 
-public class FIFO extends SchedulerQuantum{
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.function.BiPredicate;
+
+public class EDFe extends SchedulerPriority{
+    private static final Comparator<Job> JOBS_COMPARISON_KEY = Comparator.comparingDouble(Job::getADeadline);
+    private static final BiPredicate<Job, Job> JOBS_COMPARISON_PREDICATE = (Job j1, Job j2) -> j1.getADeadline() < j2.getADeadline();
+
     /* ================ CONSTRUCTORS ================ */
-    public FIFO(JobsBatch jobsBatch, LinkedList<Server> servers) {
+    public EDFe(JobsBatch jobsBatch, LinkedList<Server> servers){
         super(jobsBatch, servers);
         run();
     }
 
     /* ================ SETTERS ================ */
     @Override
-    public void runScheduleStep() {
+    protected void runScheduleStep() {
+        arrivedJobs.sort(JOBS_COMPARISON_KEY);
         if(areAllServersIdle() && !arrivedJobs.isEmpty()){
             schedule.currentDate = arrivedJobs.getFirst().getArrivalDate();
             initServers();
@@ -32,6 +37,7 @@ public class FIFO extends SchedulerQuantum{
 
         //We deal with new arrivals:
         arrivedJobs.addAll(jobsBatch.getArrivedJobs(nextEventDate));
-        assignArrivals();
+        arrivedJobs.sort(JOBS_COMPARISON_KEY);
+        assignArrivals(JOBS_COMPARISON_KEY, JOBS_COMPARISON_PREDICATE);
     }
 }
