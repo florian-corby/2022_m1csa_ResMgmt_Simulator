@@ -66,6 +66,7 @@ public class ServersManager {
     }
 
     /* ================ PREDICATES ================ */
+    public boolean isOverMaxPow(){ return getPow() > scheduler.SYS_POW_MAX; }
     public boolean areAllServersIdle(){
         boolean res = true;
         for(Server s : servers){

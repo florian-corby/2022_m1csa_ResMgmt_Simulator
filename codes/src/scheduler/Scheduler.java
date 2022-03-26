@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public abstract class Scheduler {
     protected Schedule schedule = new Schedule();
     protected ServersManager serversM;
-    protected final double SYS_POW_MAX;
+    public final double SYS_POW_MAX;
     protected JobsBatch jobsB;
     protected LinkedList<Job> arrivedJ = new LinkedList<>();
 
@@ -29,7 +29,6 @@ public abstract class Scheduler {
         else return Math.min(nextArrivalDate, nextJobToFinishDate);
     }
     public Schedule getSchedule(){ return schedule; }
-
 
     /* ================ SETTERS ================ */
     protected void run(){
