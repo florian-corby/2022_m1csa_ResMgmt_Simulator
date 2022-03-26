@@ -34,11 +34,11 @@ public class Job {
     public double getUnitsOfWork() { return unitsOfWork; }
 
     /* ============== SETTERS ============== */
-    public void decrement(int consumedUnitsOfWork){
+    public void decrement(double consumedUnitsOfWork){
         unitsOfWork -= consumedUnitsOfWork;
         if(unitsOfWork < 0) unitsOfWork = 0;
     }
-    public void setAperiodic(){ period = Integer.MAX_VALUE; }
+    public void setAperiodic(){ period = Double.MAX_VALUE; }
 
     /* ============== PREDICATES ============== */
     public boolean isWorkDone(){ return unitsOfWork == 0; }
@@ -56,6 +56,6 @@ public class Job {
     @Override
     public String toString() {
         return "J" + id + "{" + arrivalDate + "a/" + unitsOfWork +
-                "u/" + deadline + "rd/"+(arrivalDate+deadline)+"ad/"+ (period == Integer.MAX_VALUE ? 0 : period) + "p}";
+                "u/" + deadline + "rd/"+(arrivalDate+deadline)+"ad/"+ (period == Double.MAX_VALUE ? 0 : period) + "p}";
     }
 }

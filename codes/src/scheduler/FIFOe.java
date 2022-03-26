@@ -13,9 +13,9 @@ public class FIFOe extends SchedulerQuantum {
     /* ================ SETTERS ================ */
     @Override
     public void runScheduleStep() {
-        if(areAllServersIdle() && !arrivedJobs.isEmpty()){
-            schedule.currentDate = arrivedJobs.getFirst().getArrivalDate();
-            initServers();
+        if(serversM.areAllServersIdle() && !arrivedJ.isEmpty()){
+            schedule.currentDate = arrivedJ.getFirst().getArrivalDate();
+            serversM.initServers();
         }
 
         //We compute next event date:
@@ -24,10 +24,10 @@ public class FIFOe extends SchedulerQuantum {
         schedule.currentDate += unitsOfWorkDone;
 
         //We decrement and deal with finished jobs:
-        decrementAll(unitsOfWorkDone);
+        serversM.decrementAll(unitsOfWorkDone);
 
         //We deal with new arrivals:
-        arrivedJobs.addAll(jobsBatch.getArrivedJobs(nextEventDate));
+        arrivedJ.addAll(jobsB.getArrivedJobs(nextEventDate));
         assignArrivals();
     }
 }

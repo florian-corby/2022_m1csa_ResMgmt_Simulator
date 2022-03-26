@@ -18,17 +18,18 @@ public class RR extends Scheduler {
     /* ================ SETTERS ================ */
     @Override
     public void runScheduleStep() {
-        Job job = arrivedJobs.removeFirst();
+        Job job = arrivedJ.removeFirst();
 
-        double start = ScheduleEntry.computeStart(schedule, servers.getFirst(), job);
+        double start = ScheduleEntry.computeStart(schedule, serversM.getServers().getFirst(), job);
         double end = ScheduleEntry.computeEnd(job, start, QUANTUM);
         schedule.currentDate = end;
         job.decrement(QUANTUM);
 
-        ScheduleEntry newEntry = new ScheduleEntry(job, servers.getFirst(), start, end, servers.getFirst().getFreq(0));
+        ScheduleEntry newEntry = new ScheduleEntry(job, serversM.getServers().getFirst(), start, end,
+                                 serversM.getServers().getFirst().getFreq(0));
         schedule.add(newEntry);
 
-        arrivedJobs.addAll(jobsBatch.getArrivedJobs(end));
-        if(!job.isWorkDone()) arrivedJobs.add(job);
+        arrivedJ.addAll(jobsB.getArrivedJobs(end));
+        if(!job.isWorkDone()) arrivedJ.add(job);
     }
 }

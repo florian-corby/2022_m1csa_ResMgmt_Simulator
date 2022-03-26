@@ -19,10 +19,10 @@ public class EDFe extends SchedulerPriority{
     /* ================ SETTERS ================ */
     @Override
     protected void runScheduleStep() {
-        arrivedJobs.sort(JOBS_COMPARISON_KEY);
-        if(areAllServersIdle() && !arrivedJobs.isEmpty()){
-            schedule.currentDate = arrivedJobs.getFirst().getArrivalDate();
-            initServers();
+        arrivedJ.sort(JOBS_COMPARISON_KEY);
+        if(serversM.areAllServersIdle() && !arrivedJ.isEmpty()){
+            schedule.currentDate = arrivedJ.getFirst().getArrivalDate();
+            serversM.initServers();
         }
 
         //We compute next event date:
@@ -31,11 +31,11 @@ public class EDFe extends SchedulerPriority{
         schedule.currentDate += unitsOfWorkDone;
 
         //We decrement and deal with finished jobs:
-        decrementAll(unitsOfWorkDone);
+        serversM.decrementAll(unitsOfWorkDone);
 
         //We deal with new arrivals:
-        arrivedJobs.addAll(jobsBatch.getArrivedJobs(nextEventDate));
-        arrivedJobs.sort(JOBS_COMPARISON_KEY);
+        arrivedJ.addAll(jobsB.getArrivedJobs(nextEventDate));
+        arrivedJ.sort(JOBS_COMPARISON_KEY);
         assignArrivals(JOBS_COMPARISON_KEY, JOBS_COMPARISON_PREDICATE);
     }
 }

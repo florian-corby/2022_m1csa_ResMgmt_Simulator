@@ -19,11 +19,11 @@ public abstract class SchedulerPriority extends Scheduler {
     protected void assignArrivals(Comparator<Job> jobsComparKey, BiPredicate<Job, Job> jobsComparPredicate){
         boolean isAssignable = true;
         boolean isAssigned;
-        Iterator<Job> jobIterator = arrivedJobs.iterator();
+        Iterator<Job> jobIterator = arrivedJ.iterator();
 
         while(jobIterator.hasNext() && isAssignable){
             Job j = jobIterator.next();
-            isAssigned = assignToIdle(j);
+            isAssigned = serversM.assignToIdle(j);
 
             if(isAssigned) jobIterator.remove();
             else{
@@ -42,7 +42,7 @@ public abstract class SchedulerPriority extends Scheduler {
 
     private Server getPreemptable(Job j, BiPredicate<Job, Job> jobsComparPredicate){
         Server res = null;
-        for(Server s : servers){
+        for(Server s : serversM.getServers()){
             if(!jobsComparPredicate.test(s.getRunningJob(), j)){
                 if(res == null || !jobsComparPredicate.test(s.getRunningJob(), res.getRunningJob()))
                     res = s;

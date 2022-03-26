@@ -15,11 +15,11 @@ public abstract class SchedulerQuantum extends Scheduler {
     /* ================ SETTERS ================ */
     protected void assignArrivals(){
         boolean isAssigned;
-        Iterator<Job> jobIterator = arrivedJobs.iterator();
+        Iterator<Job> jobIterator = arrivedJ.iterator();
 
         while(jobIterator.hasNext()){
             Job j = jobIterator.next();
-            isAssigned = assignToIdle(j);
+            isAssigned = serversM.assignToIdle(j);
 
             if(isAssigned) jobIterator.remove();
             else{
@@ -32,7 +32,7 @@ public abstract class SchedulerQuantum extends Scheduler {
 
     private Server getPreemptable(){
         Server res = null;
-        for(Server s : servers)
+        for(Server s : serversM.getServers())
             if(s != null && (res == null || s.getTotalUW() < res.getTotalUW())) res = s;
         return res;
     }
