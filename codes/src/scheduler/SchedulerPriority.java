@@ -31,7 +31,7 @@ public abstract class SchedulerPriority extends Scheduler {
                 if(servP == null) isAssignable = false;
                 else{
                     double start = ScheduleEntry.computeStart(schedule, servP, servP.getRunningJob());
-                    schedule.add(new ScheduleEntry(servP.getRunningJob(), servP, start, schedule.currentDate, servP.getFreq(0)));
+                    schedule.add(new ScheduleEntry(servP.getRunningJob(), servP, start, schedule.currentDate, servP.getCurrFreq()));
                     servP.getAssignedJobs().add(j);
                     servP.getAssignedJobs().sort(jobsComparKey);
                     jobIterator.remove();

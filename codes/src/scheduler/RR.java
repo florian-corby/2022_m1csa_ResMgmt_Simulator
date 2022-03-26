@@ -26,7 +26,7 @@ public class RR extends Scheduler {
         job.decrement(QUANTUM);
 
         ScheduleEntry newEntry = new ScheduleEntry(job, serversM.getServers().getFirst(), start, end,
-                                 serversM.getServers().getFirst().getFreq(0));
+                                 serversM.getServers().getFirst().getCurrFreq());
         schedule.add(newEntry);
 
         arrivedJ.addAll(jobsB.getArrivedJobs(end));

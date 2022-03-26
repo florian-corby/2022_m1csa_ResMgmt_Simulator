@@ -15,7 +15,11 @@ public class ServersManager {
     }
 
     /* ================ GETTERS ================ */
-    public double getPow(){ double res = 0; for(Server s : servers) res += s.getCurrPow(); return res; }
+    public LinkedList<Server> getLateServers(double date){
+        LinkedList<Server> res = new LinkedList<>();
+        for(Server s : servers) if(s.isLate(date)) res.add(s);
+        return res;
+    }
     public Server getNextServerToFinish(){
         Server res = null;
         for(Server s : servers){
@@ -25,6 +29,7 @@ public class ServersManager {
         }
         return res;
     }
+    public double getPow(){ double res = 0; for(Server s : servers) res += s.getCurrPow(); return res; }
     public LinkedList<Server> getServers() { return servers; }
 
     /* ================ SETTERS ================ */
@@ -47,7 +52,7 @@ public class ServersManager {
             if(s.getRunningJob().getUnitsOfWork() == 0) {
                 double start = ScheduleEntry.computeStart(scheduler.getSchedule(), s, s.getRunningJob());
                 double end = scheduler.getSchedule().currentDate;
-                ScheduleEntry newEntry = new ScheduleEntry(s.getRunningJob(), s, start, end, s.getFreq(0));
+                ScheduleEntry newEntry = new ScheduleEntry(s.getRunningJob(), s, start, end, s.getCurrFreq());
                 scheduler.getSchedule().add(newEntry);
                 s.removeRunningJob();
             }
@@ -62,6 +67,32 @@ public class ServersManager {
                 jobIterator.remove();
             }
             s.setCurrFreq(0);
+        }
+    }
+
+    public void resetFreqs(){ for(Server s : servers) s.setCurrFreq(0); }
+
+    public void setFreqs(double date){
+        LinkedList<Server> lateServers = getLateServers(date);
+        boolean possibleIncFreq = !isOverMaxPow();
+
+        while(possibleIncFreq && !lateServers.isEmpty()){
+            for(Server s : lateServers){
+                if(isOverMaxPow()) break;
+                int currFreq = 1;
+
+                while(s.isLate(date) && s.getCurrFreq() != s.getMaxFreq() && !isOverMaxPow()) {
+                    s.setCurrFreq(currFreq);
+                    currFreq++;
+                }
+
+                if(isOverMaxPow()){
+                    s.setCurrFreq(currFreq-1);
+                    possibleIncFreq = false;
+                    break;
+                }
+                else if(s.getCurrFreq() == s.getMaxFreq()) lateServers.remove(s);
+            }
         }
     }
 

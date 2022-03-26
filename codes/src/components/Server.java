@@ -27,6 +27,7 @@ public class Server {
     public int getId(){ return id; }
     public double getFreq(int idx){ return FREQS[idx]; }
     public double getMaxFreq(){ return FREQS[FREQS.length-1]; }
+    public int getNbFreqs(){ return FREQS.length; }
     public Job getRunningJob(){ return isIdle() ? null : assignedJobs.getFirst(); }
     public double getTotalUW(){
         double res = 0;
@@ -36,6 +37,7 @@ public class Server {
 
     /* ================ PREDICATES ================ */
     public boolean isIdle(){ return assignedJobs.isEmpty(); }
+    public boolean isLate(double date){ return !isIdle() && getRunningJob().getADeadline() <= date + getDuration(); }
 
     /* ================ PRINTERS ================ */
     public void print(){
