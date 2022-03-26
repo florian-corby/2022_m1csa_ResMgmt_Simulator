@@ -24,7 +24,7 @@ public class RMS extends SchedulerPriority {
         arrivedJobs.sort(JOBS_COMPARISON_KEY);
         if(areAllServersIdle() && !arrivedJobs.isEmpty()){
             schedule.currentDate = arrivedJobs.getFirst().getArrivalDate();
-            initServers(JOBS_COMPARISON_KEY);
+            initServers();
         }
 
         //We compute next event date:

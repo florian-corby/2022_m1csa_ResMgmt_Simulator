@@ -2,6 +2,8 @@ package scheduler;
 
 import components.*;
 
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public abstract class Scheduler {
@@ -58,6 +60,16 @@ public abstract class Scheduler {
                 schedule.add(newEntry);
                 s.removeRunningJob();
             }
+        }
+    }
+    protected void initServers(){
+        Iterator<Job> jobIterator = arrivedJobs.iterator();
+        int counter = 0;
+
+        while(jobIterator.hasNext() && counter < servers.size()){
+            servers.get(counter).getAssignedJobs().add(jobIterator.next());
+            jobIterator.remove();
+            counter++;
         }
     }
     protected void run(){

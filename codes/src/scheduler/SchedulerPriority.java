@@ -51,16 +51,4 @@ public abstract class SchedulerPriority extends Scheduler {
         }
         return res;
     }
-
-    protected void initServers(Comparator<Job> c){
-        Iterator<Job> jobIterator = arrivedJobs.iterator();
-        int counter = 0;
-
-        while(jobIterator.hasNext() && counter < servers.size()){
-            servers.get(counter).getAssignedJobs().add(jobIterator.next());
-            servers.get(counter).getAssignedJobs().sort(c);
-            jobIterator.remove();
-            counter++;
-        }
-    }
 }

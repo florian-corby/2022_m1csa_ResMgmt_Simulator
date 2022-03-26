@@ -7,7 +7,7 @@ import components.Job;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class FIFO extends Scheduler{
+public class FIFO extends SchedulerQuantum{
 
     /* ================ CONSTRUCTORS ================ */
     public FIFO(JobsBatch jobsBatch, LinkedList<Server> servers) {
@@ -18,19 +18,21 @@ public class FIFO extends Scheduler{
     /* ================ SETTERS ================ */
     @Override
     public void runScheduleStep() {
-        Iterator<Job> jobIterator = arrivedJobs.iterator();
-
-        while(jobIterator.hasNext()){
-            Job job = jobIterator.next();
-            jobIterator.remove();
-
-            double start = ScheduleEntry.computeStart(schedule, servers.getFirst(), job);
-            double end = start + job.getUnitsOfWork();
-            schedule.currentDate = end;
-
-            ScheduleEntry newEntry = new ScheduleEntry(job, servers.getFirst(), start, end, servers.getFirst().getFreq(0));
-            schedule.add(newEntry);
+        if(areAllServersIdle() && !arrivedJobs.isEmpty()){
+            schedule.currentDate = arrivedJobs.getFirst().getArrivalDate();
+            initServers();
         }
-    }
 
+        //We compute next event date:
+        double nextEventDate = getNextEventDate();
+        double unitsOfWorkDone = nextEventDate - schedule.currentDate;
+        schedule.currentDate += unitsOfWorkDone;
+
+        //We decrement and deal with finished jobs:
+        decrementAll(unitsOfWorkDone);
+
+        //We deal with new arrivals:
+        arrivedJobs.addAll(jobsBatch.getArrivedJobs(nextEventDate));
+        assignArrivals();
+    }
 }

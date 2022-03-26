@@ -19,6 +19,11 @@ public class Server {
     public int getId() { return id; }
     public double getFreq(int idx) { return frequences[idx]; }
     public Job getRunningJob(){ return isIdle() ? null : assignedJobs.getFirst(); }
+    public double getTotalUW(){
+        double res = 0;
+        for(Job j : assignedJobs) res += j.getUnitsOfWork();
+        return res;
+    }
 
     /* ================ PREDICATES ================ */
     public boolean isIdle(){ return assignedJobs.isEmpty(); }
