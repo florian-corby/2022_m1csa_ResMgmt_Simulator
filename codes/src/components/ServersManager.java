@@ -1,6 +1,8 @@
 package components;
 
 import scheduler.Scheduler;
+
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -15,6 +17,12 @@ public class ServersManager {
     }
 
     /* ================ GETTERS ================ */
+    public LinkedList<Server> getIdleServers(){
+        LinkedList<Server> idleServers = new LinkedList<>();
+        for(Server s : servers) if(s.isIdle()) idleServers.add(s);
+        idleServers.sort(Comparator.comparingDouble(Server::getMaxFreq).reversed());
+        return idleServers;
+    }
     public LinkedList<Server> getLateServers(double date){
         LinkedList<Server> res = new LinkedList<>();
         for(Server s : servers) if(s.isLate(date)) res.add(s);
@@ -34,15 +42,9 @@ public class ServersManager {
 
     /* ================ SETTERS ================ */
     public boolean assignToIdle(Job j){
-        boolean isAssigned = false;
-        for(Server s : servers){
-            if(s.isIdle()){
-                s.getAssignedJobs().add(j);
-                isAssigned = true;
-                break;
-            }
-        }
-        return isAssigned;
+        LinkedList<Server> idleServers = getIdleServers();
+        if(!idleServers.isEmpty()) idleServers.getFirst().getAssignedJobs().add(j);
+        return !idleServers.isEmpty();
     }
 
     public void decrementAll(double time){
@@ -61,7 +63,8 @@ public class ServersManager {
 
     public void initServers(){
         Iterator<Job> jobIterator = scheduler.getArrivedJ().iterator();
-        for(Server s : servers){
+        LinkedList<Server> idleServers = getIdleServers();
+        for(Server s : idleServers){
             if(jobIterator.hasNext()){
                 s.getAssignedJobs().add(jobIterator.next());
                 jobIterator.remove();
