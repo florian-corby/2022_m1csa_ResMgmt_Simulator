@@ -50,6 +50,7 @@ public class ServersManager {
     public void decrementAll(double time){
         for(Server s: servers){
             if(s.isIdle()) continue;
+            // Units of work done with frequency 'freq' = time spent * 'freq':
             s.getRunningJob().decrement(time * s.getCurrFreq());
             if(s.getRunningJob().getUnitsOfWork() == 0) {
                 double start = ScheduleEntry.computeStart(scheduler.getSchedule(), s, s.getRunningJob());

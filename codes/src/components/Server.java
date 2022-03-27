@@ -37,7 +37,8 @@ public class Server {
 
     /* ================ PREDICATES ================ */
     public boolean isIdle(){ return assignedJobs.isEmpty(); }
-    public boolean isLate(double date){ return !isIdle() && getRunningJob().getADeadline() <= date + getDuration(); }
+    //Is the running job going to be late from date 'date':
+    public boolean isLate(double date){ return !isIdle() && getRunningJob().getADeadline() < date + getDuration(); }
 
     /* ================ PRINTERS ================ */
     public void print(){

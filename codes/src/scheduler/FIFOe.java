@@ -20,14 +20,11 @@ public class FIFOe extends SchedulerQuantum {
 
         //We start with frequencies at minimum:
         serversM.resetFreqs();
-
-        //We compute next event date at minimum frequencies and
-        //manage late jobs by increasing frequencies if it's possible:
-        double nextEventDate = getNextEventDate();
-        serversM.setFreqs(nextEventDate);
+        //We increase frequencies if jobs are going to be late from the current date:
+        serversM.setFreqs(schedule.currentDate);
 
         //We agree on next event:
-        nextEventDate = getNextEventDate();
+        double nextEventDate = getNextEventDate();
         double duration = nextEventDate - schedule.currentDate;
         schedule.currentDate += duration;
 
