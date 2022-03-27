@@ -23,7 +23,7 @@ public class FIFOe extends SchedulerQuantum {
         //We increase frequencies if jobs are going to be late from the current date:
         serversM.setFreqs(schedule.currentDate);
 
-        //We agree on next event:
+        //We compute next event date:
         double nextEventDate = getNextEventDate();
         double duration = nextEventDate - schedule.currentDate;
         schedule.currentDate += duration;

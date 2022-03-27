@@ -25,6 +25,11 @@ public class EDFe extends SchedulerPriority{
             serversM.initServers();
         }
 
+        //We start with frequencies at minimum:
+        serversM.resetFreqs();
+        //We increase frequencies if jobs are going to be late from the current date:
+        serversM.setFreqs(schedule.currentDate);
+
         //We compute next event date:
         double nextEventDate = getNextEventDate();
         double unitsOfWorkDone = nextEventDate - schedule.currentDate;
