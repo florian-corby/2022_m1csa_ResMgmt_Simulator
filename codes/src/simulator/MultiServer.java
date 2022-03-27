@@ -39,7 +39,7 @@ public class MultiServer {
         new Metrics(rmsScheduler.getSchedule()).print();
 
         // =================================== PYTHON GRAPHS GENERATION ===========================================
-        String plotterCmd = "python3 ../lib/ut3/savePlot.py ";
+        String plotterCmd = "python3 ../lib/etu/savePlot.py ";
         try {
             Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_multiServer_fifo.txt");
             Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_multiServer_rr.txt");

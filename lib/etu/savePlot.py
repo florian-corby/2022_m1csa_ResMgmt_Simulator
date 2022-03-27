@@ -75,7 +75,7 @@ file.close()
 print("Done parsing file.")
 
 # Create Matplotlib figure
-fig1 = plt.figure()
+fig1 = plt.figure(figsize=(16, 9))
 
 print("Creating plots...")
 
@@ -109,7 +109,7 @@ for j in jobs:
     # Add text for the ID of the job at (almost) the same position
     ax1.text(j[2]+(abs(j[3]-j[2]))/4, j[1]-0.06, str(int(j[0]))+'('+str(int(j[4]))+')')
 print("Done...")
+plt.xticks(fontsize=6)
 plt.plot()
 
-plt.savefig(args.file.rsplit('.', 1)[0] + ".png", bbox_inches=0,
-orientation='landscape', pad_inches=0.1)
+plt.savefig(args.file.rsplit('.', 1)[0] + ".png", bbox_inches='tight')

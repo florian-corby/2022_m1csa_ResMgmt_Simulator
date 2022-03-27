@@ -12,11 +12,16 @@ public class EnergyAware {
         int nbServers = test.getServersLoader().getServers().size();
 
         // =================================== OUTPUT FILES GENERATION ===========================================
+        //Running FIFOe scheduling simulation:
         System.out.println(">>> SCHEDULING USING FIFO");
         FIFOe fifoScheduler = new FIFOe(test, nbServers);
         fifoScheduler.getSchedule().write("../out/" + test.getFileName() + "_energyAware_fifo.txt");
         fifoScheduler.getSchedule().print();
-        new Metrics(fifoScheduler.getSchedule()).print();
+
+        //Getting and exporting FIFOe metrics:
+        Metrics metrics = new Metrics(fifoScheduler.getSchedule());
+        metrics.print();
+        metrics.writeConsumption("../out/" + test.getFileName() + "_energyAware_fifo_consumption.txt");
 
 //        System.out.println(">>> SCHEDULING USING EARLIEST DEADLINE FIRST");
 //        EDF edfScheduler = new EDF(test, nbServers);
@@ -25,9 +30,11 @@ public class EnergyAware {
 //        new Metrics(edfScheduler.getSchedule()).print();
 
         // =================================== PYTHON GRAPHS GENERATION ===========================================
-        String plotterCmd = "python3 ../lib/ut3/savePlot.py ";
+        String plotterCmd = "python3 ../lib/etu/savePlot.py ";
+        String consPlotCmd = "python3 ../lib/etu/consPlot.py ";
         try {
             Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_energyAware_fifo.txt");
+            Runtime.getRuntime().exec(consPlotCmd + "../out/" + test.getFileName() + "_energyAware_fifo_consumption.txt");
 //            Runtime.getRuntime().exec(plotterCmd + "../out/" + test.getFileName() + "_energyAware_edf.txt");
         } catch (IOException e) {
             e.printStackTrace();
