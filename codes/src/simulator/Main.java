@@ -8,10 +8,10 @@ public class Main {
         test.print();
         System.out.println();
 
-//        new MonoServer(test);
-//        System.out.println();
-//        new MultiServer(test);
-//        System.out.println();
+        new MonoServer(test);
+        System.out.println();
+        new MultiServer(test);
+        System.out.println();
         new EnergyAware(test);
         System.out.println();
     }

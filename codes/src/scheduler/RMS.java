@@ -6,10 +6,17 @@ import java.util.Comparator;
 import java.util.function.BiPredicate;
 
 public class RMS extends SchedulerPriority {
-    private static final Comparator<Job> JOBS_COMPARISON_KEY = Comparator.comparingDouble(Job::getPeriod);
-    private static final BiPredicate<Job, Job> JOBS_COMPARISON_PREDICATE =  (j1, j2) ->
-            j1.getPeriod() == Double.MAX_VALUE && j2.getPeriod() == Double.MAX_VALUE || j1.getPeriod() < j2.getPeriod();
-
+    private static final Comparator<Job> JOBS_COMPARISON_KEY = (j1, j2) -> {
+        if (j1.getPeriod() == j2.getPeriod())
+            return Double.compare(j1.getADeadline(), j2.getADeadline());
+        else
+            return Double.compare(j1.getPeriod(), j2.getPeriod());
+    };
+    private static final BiPredicate<Job, Job> JOBS_COMPARISON_PREDICATE =  (j1, j2) -> {
+            if (j1.getPeriod() == j2.getPeriod())
+                return j1.getADeadline() <= j2.getADeadline();
+            else
+                return j1.getPeriod() <= j2.getPeriod();};
 
     /* ================ CONSTRUCTORS ================ */
     public RMS(Test test, int nbServers){
