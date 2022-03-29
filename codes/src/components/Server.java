@@ -37,8 +37,22 @@ public class Server {
 
     /* ================ PREDICATES ================ */
     public boolean isIdle(){ return assignedJobs.isEmpty(); }
-    //Is the running job going to be late from date 'date':
-    public boolean isLate(double date){ return !isIdle() && getRunningJob().getADeadline() < date + getDuration(); }
+    //Is the running job going to be late running from date 'date' at frequency 'currFreq':
+    public boolean willBeLate(double date){
+        if(isIdle()) return false;
+        else {
+            boolean res = false;
+            double nextDate = date;
+            for (Job j : assignedJobs) {
+                nextDate += j.getUnitsOfWork() / currFreq;
+                if (j.getADeadline() < nextDate) {
+                    res = true;
+                    break;
+                }
+            }
+            return res;
+        }
+    }
 
     /* ================ PRINTERS ================ */
     public void print(){

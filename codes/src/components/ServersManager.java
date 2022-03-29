@@ -25,7 +25,7 @@ public class ServersManager {
     }
     public LinkedList<Server> getLateServers(double date){
         LinkedList<Server> res = new LinkedList<>();
-        for(Server s : servers) if(s.isLate(date)) res.add(s);
+        for(Server s : servers) if(s.willBeLate(date)) res.add(s);
         return res;
     }
     public Server getNextServerToFinish(){
@@ -82,10 +82,9 @@ public class ServersManager {
 
         while(possibleIncFreq && !lateServers.isEmpty()){
             for(Server s : lateServers){
-                if(isOverMaxPow()) break;
                 int currFreq = 1;
 
-                while(s.isLate(date) && s.getCurrFreq() != s.getMaxFreq() && !isOverMaxPow()) {
+                while(s.willBeLate(date) && s.getCurrFreq() < s.getMaxFreq() && !isOverMaxPow()) {
                     s.setCurrFreq(currFreq);
                     currFreq++;
                 }
@@ -95,8 +94,9 @@ public class ServersManager {
                     possibleIncFreq = false;
                     break;
                 }
-                else if(s.getCurrFreq() == s.getMaxFreq()) lateServers.remove(s);
+                else lateServers.remove(s);
             }
+
         }
     }
 

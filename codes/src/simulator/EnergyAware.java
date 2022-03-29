@@ -25,7 +25,7 @@ public class EnergyAware {
         //Running EDFe scheduling simulation:
         System.out.println(">>> SCHEDULING USING EARLIEST DEADLINE FIRST (energy aware)");
         EDF edfScheduler = new EDF(test, nbServers);
-        edfScheduler.getSchedule().write("../out/" + test.getFileName() + "_multiServer_edf.txt");
+        edfScheduler.getSchedule().write("../out/" + test.getFileName() + "_energyAware_edf.txt");
         edfScheduler.getSchedule().print();
         //Getting and exporting FIFOe metrics:
         Metrics edfMetrics = new Metrics(edfScheduler.getSchedule());
