@@ -1,36 +1,72 @@
 package components;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Server {
     private int id;
-    private int[] frequences;
+    private final double[] FREQS;
+    private double currFreq;
+    private double currPow;
     private LinkedList<Job> assignedJobs = new LinkedList<>();
 
     /* ================ CONSTRUCTORS ================ */
-    public Server(int id, int[] frequences){
-        this.id = id;
-        this.frequences = new int[frequences.length];
-        System.arraycopy(frequences, 0, this.frequences, 0, frequences.length);
+    public Server(int argId, double[] argFreqs){
+        id = argId;
+        FREQS = new double[argFreqs.length];
+        argFreqs = Arrays.stream(argFreqs).sorted().toArray();
+        System.arraycopy(argFreqs, 0, FREQS, 0, argFreqs.length);
+        setCurrFreq(0);
     }
 
     /* ================ GETTERS ================ */
-    public LinkedList<Job> getAssignedJobs() { return assignedJobs; }
-    public int getId() { return id; }
-    public int getFreq(int idx) { return frequences[idx]; }
+    public LinkedList<Job> getAssignedJobs(){ return assignedJobs; }
+    public double getCurrFreq(){ return currFreq; }
+    public double getCurrPow(){ return currPow; }
+    public double getDuration(){ return isIdle() ? -1 : getRunningJob().getUnitsOfWork() / currFreq; }
+    public int getId(){ return id; }
+    public double getFreq(int idx){ return FREQS[idx]; }
+    public double getMaxFreq(){ return FREQS[FREQS.length-1]; }
+    public int getNbFreqs(){ return FREQS.length; }
     public Job getRunningJob(){ return isIdle() ? null : assignedJobs.getFirst(); }
+    public double getTotalUW(){
+        double res = 0;
+        for(Job j : assignedJobs) res += j.getUnitsOfWork();
+        return res;
+    }
 
     /* ================ PREDICATES ================ */
     public boolean isIdle(){ return assignedJobs.isEmpty(); }
+    //Is the running job going to be late running from date 'date' at frequency 'currFreq':
+    public boolean willBeLate(double date){
+        if(isIdle()) return false;
+        else {
+            boolean res = false;
+            double nextDate = date;
+            for (Job j : assignedJobs) {
+                nextDate += j.getUnitsOfWork() / currFreq;
+                if (j.getADeadline() < nextDate) {
+                    res = true;
+                    break;
+                }
+            }
+            return res;
+        }
+    }
 
     /* ================ PRINTERS ================ */
     public void print(){
         System.out.println("============ SERVER #" + this.id + " ============");
         System.out.print("Supported frequencies: ");
-        for(int freq : frequences) System.out.print(freq + " ");
+        for(double freq : FREQS) System.out.print(freq + " ");
         System.out.println("\n===================================");
     }
 
     /* ================ SETTERS ================ */
     public void removeRunningJob(){ assignedJobs.removeFirst(); }
+    public void setCurrFreq(int idFreq){
+        currFreq = FREQS[idFreq];
+        double currSlowDown = currFreq / getMaxFreq();
+        currPow = 200 * Math.pow(currSlowDown, 2);
+    }
 }

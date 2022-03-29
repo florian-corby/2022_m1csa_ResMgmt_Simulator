@@ -21,9 +21,9 @@ public class ServersLoader {
                 currentLine = currentLine.replaceAll("[()]", "");
                 String[] tokens = currentLine.split(" ");
 
-                int[] serverFreq = new int[tokens.length-1];
+                double[] serverFreq = new double[tokens.length-1];
                 for (int i = 0; i < tokens.length-1; i++)
-                    serverFreq[i] = Integer.parseInt(tokens[i+1]);
+                    serverFreq[i] = Double.parseDouble(tokens[i+1]);
 
                 Server server = new Server(Integer.parseInt(tokens[0]), serverFreq);
                 servers.add(server);

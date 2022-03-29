@@ -12,5 +12,7 @@ public class Main {
         System.out.println();
         new MultiServer(test);
         System.out.println();
+        new EnergyAware(test);
+        System.out.println();
     }
 }

@@ -2,14 +2,14 @@ package components;
 
 public class Job {
     private int id;
-    private int arrivalDate;
-    private int unitsOfWork;
-    private int deadline;
-    private int period;
+    private double arrivalDate;
+    private double unitsOfWork;
+    private double deadline;
+    private double period;
 
     /* ============== CONSTRUCTORS ============== */
-    public Job(int id, int arrivalDate, int unitsOfWork,
-               int deadline, int period){
+    public Job(int id, double arrivalDate, double unitsOfWork,
+               double deadline, double period){
         this.id = id;
         this.arrivalDate = arrivalDate;
         this.unitsOfWork = unitsOfWork;
@@ -27,18 +27,18 @@ public class Job {
 
     /* ============== GETTERS ============== */
     public int getId() { return id; }
-    public int getADeadline(){ return arrivalDate + deadline; }
-    public int getArrivalDate() { return arrivalDate; }
-    public int getPeriod() { return period; }
-    public int getRDeadline() { return deadline; }
-    public int getUnitsOfWork() { return unitsOfWork; }
+    public double getADeadline(){ return arrivalDate + deadline; }
+    public double getArrivalDate() { return arrivalDate; }
+    public double getPeriod() { return period; }
+    public double getRDeadline() { return deadline; }
+    public double getUnitsOfWork() { return unitsOfWork; }
 
     /* ============== SETTERS ============== */
-    public void decrement(int consumedUnitsOfWork){
+    public void decrement(double consumedUnitsOfWork){
         unitsOfWork -= consumedUnitsOfWork;
         if(unitsOfWork < 0) unitsOfWork = 0;
     }
-    public void setAperiodic(){ period = Integer.MAX_VALUE; }
+    public void setAperiodic(){ period = Double.MAX_VALUE; }
 
     /* ============== PREDICATES ============== */
     public boolean isWorkDone(){ return unitsOfWork == 0; }
@@ -49,13 +49,13 @@ public class Job {
         System.out.println("Arrival Date: " + arrivalDate);
         System.out.println("Units of Work: " + unitsOfWork);
         System.out.println("Deadline: " + deadline);
-        System.out.println("Period: " + (period == Integer.MAX_VALUE ? 0 : period));
+        System.out.println("Period: " + (period == Double.MAX_VALUE ? 0 : period));
         System.out.println("=====================================");
     }
 
     @Override
     public String toString() {
         return "J" + id + "{" + arrivalDate + "a/" + unitsOfWork +
-                "u/" + deadline + "rd/"+(arrivalDate+deadline)+"ad/"+ (period == Integer.MAX_VALUE ? 0 : period) + "p}";
+                "u/" + deadline + "rd/"+(arrivalDate+deadline)+"ad/"+ (period == Double.MAX_VALUE ? 0 : period) + "p}";
     }
 }

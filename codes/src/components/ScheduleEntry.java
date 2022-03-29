@@ -5,10 +5,10 @@ public class ScheduleEntry {
     private Server server;
     private double start;
     private double end;
-    private int freq;
+    private double freq;
 
     /* ================ CONSTRUCTORS ================ */
-    public ScheduleEntry(Job job, Server server, double start, double end, int freq){
+    public ScheduleEntry(Job job, Server server, double start, double end, double freq){
         this.job = job;
         this.server = server;
         this.start = start;
@@ -21,11 +21,11 @@ public class ScheduleEntry {
     public Server getServer() { return server; }
     public double getStart() { return start; }
     public double getEnd() { return end; }
-    public int getFreq() { return freq; }
+    public double getFreq() { return freq; }
 
     /* ================ PRINTERS ================ */
     public void print(){
-        System.out.printf("  %-5d | %-8d | %-5.1f | %-5.1f | %-9d  \n", job.getId(), server.getId(), start, end, freq);
+        System.out.printf("  %-5d | %-8d | %-5.1f | %-5.1f | %-9.1f  \n", job.getId(), server.getId(), start, end, freq);
     }
 
     /* ================ UTILS ================ */

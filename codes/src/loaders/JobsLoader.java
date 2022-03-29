@@ -24,7 +24,7 @@ public class JobsLoader {
                 if(readJob.getPeriod() > 0) {
                     for(int i = 1; i < nbRepeat; i++) {
                         Job prevPeriodicJob = loadedJobs.getLast();
-                        int periodicArrivalDate = prevPeriodicJob.getArrivalDate() + prevPeriodicJob.getPeriod();
+                        double periodicArrivalDate = prevPeriodicJob.getArrivalDate() + prevPeriodicJob.getPeriod();
                         Job periodicJob = new Job(prevPeriodicJob.getId(), periodicArrivalDate, prevPeriodicJob.getUnitsOfWork(),
                                                   prevPeriodicJob.getRDeadline(), prevPeriodicJob.getPeriod());
                         loadedJobs.add(periodicJob);

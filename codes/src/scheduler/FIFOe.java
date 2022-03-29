@@ -2,9 +2,10 @@ package scheduler;
 
 import loaders.Test;
 
-public class FIFO extends SchedulerQuantum{
+
+public class FIFOe extends SchedulerQuantum {
     /* ================ CONSTRUCTORS ================ */
-    public FIFO(Test test, int nbServers) {
+    public FIFOe(Test test, int nbServers) {
         super(test, nbServers);
         run();
     }
@@ -17,13 +18,18 @@ public class FIFO extends SchedulerQuantum{
             serversM.initServers();
         }
 
+        //We start with frequencies at minimum:
+        serversM.resetFreqs();
+        //We increase frequencies if jobs are going to be late from the current date:
+        serversM.setFreqs(schedule.currentDate);
+
         //We compute next event date:
         double nextEventDate = getNextEventDate();
-        double unitsOfWorkDone = nextEventDate - schedule.currentDate;
-        schedule.currentDate += unitsOfWorkDone;
+        double duration = nextEventDate - schedule.currentDate;
+        schedule.currentDate += duration;
 
         //We decrement and deal with finished jobs:
-        serversM.decrementAll(unitsOfWorkDone);
+        serversM.decrementAll(duration);
 
         //We deal with new arrivals:
         arrivedJ.addAll(jobsB.getArrivedJobs(nextEventDate));

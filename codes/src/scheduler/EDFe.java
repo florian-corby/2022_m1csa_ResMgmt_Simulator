@@ -6,12 +6,12 @@ import loaders.Test;
 import java.util.Comparator;
 import java.util.function.BiPredicate;
 
-public class EDF extends SchedulerPriority {
+public class EDFe extends SchedulerPriority{
     private static final Comparator<Job> JOBS_COMPARISON_KEY = Comparator.comparingDouble(Job::getADeadline);
     private static final BiPredicate<Job, Job> JOBS_COMPARISON_PREDICATE = (Job j1, Job j2) -> j1.getADeadline() < j2.getADeadline();
 
     /* ================ CONSTRUCTORS ================ */
-    public EDF(Test test, int nbServers){
+    public EDFe(Test test, int nbServers){
         super(test, nbServers);
         run();
     }
@@ -24,6 +24,11 @@ public class EDF extends SchedulerPriority {
             schedule.currentDate = arrivedJ.getFirst().getArrivalDate();
             serversM.initServers();
         }
+
+        //We start with frequencies at minimum:
+        serversM.resetFreqs();
+        //We increase frequencies if jobs are going to be late from the current date:
+        serversM.setFreqs(schedule.currentDate);
 
         //We compute next event date:
         double nextEventDate = getNextEventDate();
