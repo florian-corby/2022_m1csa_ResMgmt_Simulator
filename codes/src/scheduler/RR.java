@@ -20,15 +20,18 @@ public class RR extends Scheduler {
     public void runScheduleStep() {
         Job job = arrivedJ.removeFirst();
 
+        //We compute next event date:
         double start = ScheduleEntry.computeStart(schedule, serversM.getServers().getFirst(), job);
         double end = ScheduleEntry.computeEnd(job, start, QUANTUM);
         schedule.currentDate = end;
-        job.decrement(QUANTUM);
 
+        //We decrement and deal with the finished job:
+        job.decrement(QUANTUM);
         ScheduleEntry newEntry = new ScheduleEntry(job, serversM.getServers().getFirst(), start, end,
                                  serversM.getServers().getFirst().getCurrFreq());
         schedule.add(newEntry);
 
+        //We deal with new arrivals:
         arrivedJ.addAll(jobsB.getArrivedJobs(end));
         if(!job.isWorkDone()) arrivedJ.add(job);
     }

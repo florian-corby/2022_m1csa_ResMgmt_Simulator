@@ -1,18 +1,64 @@
- %% =========== I =========== %%
+  %% =========== A =========== %%
+ % Automatons:
+ \begin{tikzpicture}
+ 	%\draw [help lines] (-1,1) grid (3,-1);
+ 	\node (s0) [state, initial, initial text=] {$s_0$};
+ 	\node (s1) [state] at (2, 1) {$s_1$};
+ 	\node (s2) [state] at (2, -1) {$s_2$};
+ 	\node (s3) [state, accepting] at (5, 0) {$s_3$};
+ 	
+ 	\path [-stealth, thick]
+ 	(s0) edge [loop above] node [left=0.1cm] {$true$} (s0)
+ 	(s0) edge [bend left] node [above] {$v$} (s1)
+ 	(s0) edge [bend right] node [below] {$w$}  (s2)
+ 	(s0) edge node [below] {$v \land w$}  (s3)
+ 	
+ 	(s1) edge [loop above] node [left=0.1cm] {$v$} (s1)
+ 	(s1) edge [bend left] node [above] {$v \land w$} (s3)
+ 	
+ 	(s2) edge [loop below] node [left=0.1cm] {$w$} (s2)
+ 	(s2) edge [bend right] node [below] {$v \land w$} (s3)
+ 	
+ 	(s3) edge [loop right] node [right] {$v \land w$} (s3);
+ \end{tikzpicture}
+ 
+ 
+ %% =========== F =========== %%
+% Footnotes:
+My important text\footnote{My footnote to add a bibliographic reference or an aside remark at the bottom of the page}
+
+
+%% =========== H =========== %%
+% Hyperlink to website with clickable name replacement:
+\href{www.webSite.com}{webSiteName}\\
+
+% Simple clickable URL:
+\url{www.webSite.com}\\
+
+%% =========== I =========== %%
 % Images:
-\begin{figure}[h!]
+\begin{figure}[!h]
 	\center
-	\includegraphics[scale=0.4]{path.png}
+	\includegraphics[scale=0.4]{../images/UT3.jpg}
 	\caption{Image title}
-	\label{fig:figure}
+	\label{fig:figure} 
 \end{figure}
 
+%% =========== M =========== %%
+% Maths formulas examples (inline format):
+\href{https://fr.overleaf.com/learn/latex/Integrals\%2C_sums_and_limits}{More here}\\
+$\frac{1}{2}$\\
+$2^{x+1}$\\
+$H_{2}O + CO_{2}$\\
+$\sum_{n=1}^{\infty} 2^{-n} = 1$\\
+$\alpha \beta \gamma \delta \sigma \epsilon \nu \rho \leq \geq < > =$\\
+$\rightarrow$ $\leftarrow$ $\Longleftrightarrow$\\
 
- %% =========== T =========== %%
+%% =========== T =========== %%
 % Tables:
-\begin{tabular}{|l|c|r|}
-	\hline
-	colonne 1 & colonne 2 & colonne 3 \\
+\begin{tabular}{|l|c|r|} 
+	\hline 
+	colonne 1 & colonne 2 & colonne 3 \\ 
 	\hline
 	1.1 & 1.2 & 1.3 \\
 	2.1 & 2.2 & 2.3 \\

@@ -2,8 +2,11 @@
 % ===================  PREAMBULE ====================== %
 % ===================================================== %
 
-\documentclass[a4paper, french]{article}
+\documentclass[a4paper, french]{report}
 \usepackage{config}
+\renewcommand\thesection{\thepart.\arabic{section}}
+\renewcommand\thepart{\arabic{part}}
+%\counterwithout{section}{chapter}
 
 % ===================================================== %
 % ===================================================== %
@@ -26,7 +29,7 @@
         \HRule
         \vfill
       
-        Author(s): Florian Legendre\medskip \par
+        Author(s): Florian Legendre, Niels Boulanger\medskip \par
         
         \includegraphics[scale=0.7]{creative_commons.png}\par
     \end{flushleft}
@@ -49,5 +52,7 @@
 %%% ------------------ Début TP ------------------ %%%
 %%% ---------------------------------------------- %%%
 
-\subfile{./content.tex}
+\subfile{./part1.tex}
+\subfile{./part2.tex}
+\subfile{./part3.tex}
 \end{document}
