@@ -6,10 +6,60 @@
 \part{Multiserver Scheduling}
 
 %% ===============================
-\section{EDF}
-\subsection{Implementation}
+\section{Principles for the implementation}
+
+In the single server version the \textit{arrivedJobs} list could be used as an \textit{assignedJobs} list. But with multiple servers it became difficult to keep track of which server had started to run each task in the event of a preemption (a task that starts on a server must end on the same server). So we added to the \textit{Server} class an \textit{assignedJobs} list so that each server knows which jobs he has the responsibility of.
+
+\begin{figure}[!h]
+	\center
+	\includegraphics[scale=0.7]{part2/multiServer.png}
+	\caption{Initial situation of a multiserver scheduling}
+	\label{fig:multiServer_init} 
+\end{figure}
+
+In this configuration, jobs from the jobs batch are still by default assigned to the \textit{arrivedJobs} list whenever the current date in the schedule allows it. The method \textit{assignArrivals()} manages the arrival assignments based on the specifications of our algorithms. For example, in EDF, arrived tasks are assigned to a server if:
+\begin{enumerate}
+	\item The server is idle
+	\item The server has a task with a lower priority (ie. lower absolute deadline)\\
+\end{enumerate}
+
+If none of these conditions are verified then the task waits in the \textit{arrivedJobs} list. Servers that are idle will fetch the most critical task themselves if they are idle (cf. subsection \ref{subsec:edf} for the corresponding source code).
 
 \newpage
+This arrival specification varying from algorithm to algorithm they are redefined in their abstract classes \textit{SchedulerQuantum} and \textit{SchedulerPriority} which consistute families of schedulers\footnote{FIFO and Round Robin corresponding to the \textit{SchedulerQuantum} family and EDF/RMS to the \textit{SchedulerPriority} family}. We provide here an example of an arrival assignment implementation used by the \textit{SchedulerPriority} family:
+
+\begin{lstlisting}[style=Java, caption={Source code of the \textit{assignArrivals()} used by the \textit{SchedulerPriority} family of Schedulers}]
+	protected void assignArrivals(Comparator<Job> jobsComparKey, BiPredicate<Job, Job> jobsComparPredicate){
+		boolean isAssignable = true;
+		boolean isAssigned;
+		Iterator<Job> jobIterator = arrivedJ.iterator();
+		
+		while(jobIterator.hasNext() && isAssignable){
+			Job j = jobIterator.next();
+			isAssigned = serversM.assignToIdle(j);
+			
+			if(isAssigned) jobIterator.remove();
+			else{
+				Server servP = getPreemptable(j, jobsComparPredicate);
+				if(servP == null) isAssignable = false;
+				else{
+					double start = ScheduleEntry.computeStart(schedule, servP, servP.getRunningJob());
+					schedule.add(new ScheduleEntry(servP.getRunningJob(), servP, start, schedule.currentDate, servP.getCurrFreq()));
+					servP.getAssignedJobs().add(j);
+					servP.getAssignedJobs().sort(jobsComparKey);
+					jobIterator.remove();
+				}
+			}
+		}
+	}
+\end{lstlisting}
+ 
+%% ===============================
+\newpage
+\section{EDF}
+\subsection{Implementation}
+The algorithm used is the same as presented in subsection \ref{subsec:edf} of the previous part of this report.
+
 \subsection{Scheduling results}
 \begin{figure}[!h]
 	\center
@@ -58,8 +108,8 @@ Server #3 : 750.0
 \newpage
 \section{RMS}
 \subsection{Implementation}
+The algorithm used is the same as presented in subsection \ref{subsec:rms} of the previous part of this report.
 
-\newpage
 \subsection{Scheduling results}
 \begin{figure}[!h]
 	\center

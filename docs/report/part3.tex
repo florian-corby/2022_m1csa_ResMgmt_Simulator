@@ -5,11 +5,86 @@
 
 \part{Multiserver Energy-aware Scheduling}
 
+%% ===============================
+\section{Principles for the implementation}
+\label{sec:energyAware_principles}
+
+For this implementation of these energy aware versions of the scheduling algorithms we established a couple of hypothesis:
+\begin{itemize}
+	\item Energy aware means that we want the smallest possible consumption (and not the highest one given a maximum power consumption constraint)
+	\item All servers can run simultaneously if they all use their minimal frequencies and if they can't the problem is equivalent to having less servers all running on their minimal frequencies
+	\item We still need to respect the jobs deadlines the best we can
+	\item We can't go above the system maximum power consumption in any case\\
+\end{itemize}
+
+Given that we want the smallest possible power consumption despite making the best efforts to respect the deadlines - with the constraint of a system power cap - we established the following strategy to set the frequencies:
+\begin{enumerate}
+	\item At each step we reinitialize all servers to their minimal frequencies
+	\item We fetch the servers which have at least one assigned job that is going to be late
+	\item We increase their frequencies with a step of 1 as long as we don't go over the system power cap and as long as there's still a job that is going to be late (and also as long as we haven't reached the maximum frequency allowed by the server)\\
+\end{enumerate}
+
+This strategy led to the following implementation in the \textit{ServersManager} class:
+
+\begin{lstlisting}[style=Java, caption={Source code of the \textit{setFreqs()} method}]
+	public void setFreqs(double date){
+		LinkedList<Server> lateServers = getLateServers(date);
+		boolean possibleIncFreq = !isOverMaxPow();
+		
+		while(possibleIncFreq && !lateServers.isEmpty()){
+			for(Server s : lateServers){
+				int currFreq = 1;
+				
+				while(s.willBeLate(date) && s.getCurrFreq() < s.getMaxFreq() && !isOverMaxPow()) {
+					s.setCurrFreq(currFreq);
+					currFreq++;
+				}
+				
+				if(isOverMaxPow()){
+					s.setCurrFreq(currFreq-1);
+					possibleIncFreq = false;
+					break;
+				}
+				else lateServers.remove(s);
+			}
+		}
+	}
+\end{lstlisting}
+
 
 %% ===============================
 \newpage
 \section{FIFO}
 \subsection{Implementation}
+\label{subsec:fifoe}
+
+\begin{lstlisting}[style=Java, caption={Source code of an energy aware FIFO adapted for multiple servers}]
+	public void runScheduleStep() {
+		if(serversM.areAllServersIdle() && !arrivedJ.isEmpty()){
+			schedule.currentDate = arrivedJ.getFirst().getArrivalDate();
+			serversM.initServers();
+		}
+		
+		//We start with frequencies at minimum:
+		serversM.resetFreqs();
+		//We increase frequencies if jobs are going to be late from the current date:
+		serversM.setFreqs(schedule.currentDate);
+		
+		//We compute next event date:
+		double nextEventDate = getNextEventDate();
+		double duration = nextEventDate - schedule.currentDate;
+		schedule.currentDate += duration;
+		
+		//We decrement and deal with finished jobs:
+		serversM.decrementAll(duration);
+		
+		//We deal with new arrivals:
+		arrivedJ.addAll(jobsB.getArrivedJobs(nextEventDate));
+		assignArrivals();
+	}
+\end{lstlisting}
+
+As you may notice, compared to the presentation done in part 1 of this report, a few additional lines have appeared in the schedule step dealing with servers frequencies. Actually, allowing servers to adapt their frequencies changes so much the output schedule that we could not factorize the code and we had to create a new \textit{FIFOe} class for this energy aware FIFO.
 
 \newpage
 \subsection{Scheduling results}
@@ -55,11 +130,48 @@ Server #3 : 2500.0
 ##################################################
 \end{lstlisting}
 
+\begin{figure}[!h]
+	\center
+	\hspace*{-5em} \includegraphics[scale=0.6]{test_energyAware_fifo_consumption.png}
+	\caption{Energy consumption of FIFO servers through time}
+	\label{fig:fifo_consumption} 
+\end{figure}
+
 
 %% ===============================
 \newpage
 \section{EDF}
 \subsection{Implementation}
+
+\begin{lstlisting}[style=Java, caption={Source code of an energy aware EDF adapted for multiple servers}]
+	protected void runScheduleStep() {
+		arrivedJ.sort(JOBS_COMPARISON_KEY);
+		if(serversM.areAllServersIdle() && !arrivedJ.isEmpty()){
+			schedule.currentDate = arrivedJ.getFirst().getArrivalDate();
+			serversM.initServers();
+		}
+		
+		//We start with frequencies at minimum:
+		serversM.resetFreqs();
+		//We increase frequencies if jobs are going to be late from the current date:
+		serversM.setFreqs(schedule.currentDate);
+		
+		//We compute next event date:
+		double nextEventDate = getNextEventDate();
+		double unitsOfWorkDone = nextEventDate - schedule.currentDate;
+		schedule.currentDate += unitsOfWorkDone;
+		
+		//We decrement and deal with finished jobs:
+		serversM.decrementAll(unitsOfWorkDone);
+		
+		//We deal with new arrivals:
+		arrivedJ.addAll(jobsB.getArrivedJobs(nextEventDate));
+		arrivedJ.sort(JOBS_COMPARISON_KEY);
+		assignArrivals(JOBS_COMPARISON_KEY, JOBS_COMPARISON_PREDICATE);
+	}
+\end{lstlisting}
+
+For the same reasons as with the energy aware FIFO presented in subsection \ref{subsec:fifoe} we had to create a new \textit{EDFe} class that allows the servers to tune their frequencies. The comparison key/predicates follow the same logic as before.
 
 \newpage
 \subsection{Scheduling results}
@@ -67,7 +179,7 @@ Server #3 : 2500.0
 	\center
 	\includegraphics[scale=0.5]{test_energyAware_edf.png}
 	\caption{Output schedule produced by the EDF scheduling algorithm on multiple servers and trying to use the smallest amount of power (with a power cap) while trying to not miss any deadline}
-	\label{fig:energyAware_fifo} 
+	\label{fig:energyAware_edf} 
 \end{figure}
 
 Which corresponds to following file (<jobID, serverID, startDate, endDate, frequency>):
@@ -104,6 +216,13 @@ Server #3 : 750.0
 
 ##################################################
 \end{lstlisting}
+
+\begin{figure}[!h]
+	\center
+	\hspace*{-5em} \includegraphics[scale=0.6]{test_energyAware_edf_consumption.png}
+	\caption{Energy consumption of EDF servers through time}
+	\label{fig:edf_consumption} 
+\end{figure}
 
 
 %% ===============================

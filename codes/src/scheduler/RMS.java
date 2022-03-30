@@ -16,7 +16,8 @@ public class RMS extends SchedulerPriority {
             if (j1.getPeriod() == j2.getPeriod())
                 return j1.getADeadline() <= j2.getADeadline();
             else
-                return j1.getPeriod() <= j2.getPeriod();};
+                return j1.getPeriod() <= j2.getPeriod();
+    };
 
     /* ================ CONSTRUCTORS ================ */
     public RMS(Test test, int nbServers){

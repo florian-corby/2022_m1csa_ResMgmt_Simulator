@@ -4,9 +4,9 @@
 
 \documentclass[a4paper, french]{report}
 \usepackage{config}
-\renewcommand\thesection{\arabic{section}}
-%\renewcommand\thepart{\arabic{part}}
-\counterwithout{section}{chapter}
+\renewcommand\thesection{\thepart.\arabic{section}}
+\renewcommand\thepart{\arabic{part}}
+%\counterwithout{section}{chapter}
 
 % ===================================================== %
 % ===================================================== %
