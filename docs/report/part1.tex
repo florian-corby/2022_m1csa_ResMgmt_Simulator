@@ -228,13 +228,70 @@ Server #0 : 2799.999999999995
 	\hline 
 	\textbf{Algorithm} & \textbf{Pros} & \textbf{Cons} & \textbf{Possible Uses} \\ 
 	\hline
-	FIFO &  &  & \\
+	FIFO 
+	&  
+	\begin{itemize}[leftmargin=*]
+		\item Easy to implement and debug
+		\item Corresponds to the expected behavior of many applications (e.g. printers, chains of tasks such as piped commands, etc.)
+	\end{itemize}
+	&  
+	\begin{itemize}[leftmargin=*]
+		\item Risks of starvation if a task is blocked
+		\item Risks of heavy tardiness if a task takes an exceptionally long amount of time to complete
+	\end{itemize}
+	& 
+	\begin{itemize}[leftmargin=*]
+		\item When the application requires tasks to execute in a consecutive order (could be made safer with a timeout mechanic)
+	\end{itemize}
+	\\
 	\hline
-	Round Robin &  &  & \\
+	Round Robin 
+	&  
+	\begin{itemize}[leftmargin=*]
+		\item Prevents starvation
+		\item Still rather easy to implement and debug
+	\end{itemize}
+	&  
+	\begin{itemize}[leftmargin=*]
+		\item Tends to even more increase the number of deadline misses and average tardiness of tasks if the quantum is short
+	\end{itemize}
+	& 
+	\begin{itemize}[leftmargin=*]
+		\item With a reasonable quantum and if a strict sequence in the order of treated tasks isn't needed as in FIFO, it can be a fair way to run tasks while being starvation-free.
+	\end{itemize}
+	\\
 	\hline
-	EDF &  &  & \\
+	EDF 
+	&  
+	\begin{itemize}[leftmargin=*]
+		\item Lowest tardiness of tasks (but not necessarily lowest number of deadline misses)
+	\end{itemize}
+	&  
+	\begin{itemize}[leftmargin=*]
+		\item A bit more complex to implement and maintain
+		\item Not starvation free as if no new arrival with higher priority comes then priorities are fixed and a blocked running task can block all the other tasks
+	\end{itemize}
+	& 
+	\begin{itemize}[leftmargin=*]
+		\item Useful if we want highly responsive applications
+	\end{itemize}
+	\\
 	\hline
-	RMS &  &  & \\
+	RMS 
+	&  
+	\begin{itemize}[leftmargin=*]
+		\item Lowest number of deadline misses
+	\end{itemize}
+	&  
+	\begin{itemize}[leftmargin=*]
+		\item  A bit more complex to implement and maintain (but once you have implemented EDF it's rather straightforward and reciprocally)
+		\item Not starvation free for the same reasons than with EDF
+	\end{itemize}
+	& 
+	\begin{itemize}[leftmargin=*]
+		\item Probably the best algorithm for hard real-time operating systems where deadline misses isn't an option
+	\end{itemize}
+	\\
 	\hline
 \end{tabular}
 
