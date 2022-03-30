@@ -9,6 +9,7 @@
 \section{EDF}
 \subsection{Implementation}
 
+\newpage
 \subsection{Scheduling results}
 \begin{figure}[!h]
 	\center
@@ -58,6 +59,7 @@ Server #3 : 750.0
 \section{RMS}
 \subsection{Implementation}
 
+\newpage
 \subsection{Scheduling results}
 \begin{figure}[!h]
 	\center
@@ -114,30 +116,33 @@ Server #3 : 950.0
 	EDF 
 	&  
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item With several servers (or cores): lowest number of deadline misses and lowest average tardiness
+		\item Best workload share among servers
 	\end{itemize}
 	&  
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item What if the deadline is superior to the period of the task?
+		\item Rather hard to implement and maintain on several servers (lot of lists sorting)
 	\end{itemize}
 	& 
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item May be the best algorithm for hard real time OS if the deadline is inferior to the period of the task
 	\end{itemize}
 	\\
 	\hline
 	RMS 
 	& 
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item Very low number of deadline misses and average tardiness
 	\end{itemize} 
 	&  
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item Rather hard to implement for the same reasons than with EDF
+		\item Not the best algorithm for hard real time OS if the deadline of the tasks is inferior to their periods?
 	\end{itemize}
 	& 
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item May still be the best algorithm for hard real time OS if tasks' deadlines are equal or superior to their periods
 	\end{itemize}
 	\\
 	\hline

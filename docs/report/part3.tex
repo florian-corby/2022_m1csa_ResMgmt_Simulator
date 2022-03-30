@@ -11,6 +11,7 @@
 \section{FIFO}
 \subsection{Implementation}
 
+\newpage
 \subsection{Scheduling results}
 \begin{figure}[!h]
 	\center
@@ -60,6 +61,7 @@ Server #3 : 2500.0
 \section{EDF}
 \subsection{Implementation}
 
+\newpage
 \subsection{Scheduling results}
 \begin{figure}[!h]
 	\center
@@ -115,30 +117,33 @@ Server #3 : 750.0
 	FIFO 
 	&  
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item Still easy to implement and maintain even across multiple servers
 	\end{itemize}
 	&  
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item Respecting the deadlines requires a lot of energy
+		\item Workload across servers isn't very well balanced
+		\item Still not starvation-free (but also the case for EDF...)
 	\end{itemize}
 	& 
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item If energy isn't a problem it's still the best algorithm to deal with tasks in their order of arrivals
 	\end{itemize}
 	\\
 	\hline
 	EDF 
 	&  
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item Lowest energy consumption as there was no deadline misses in the first place
+		\item Best servers workload balance
 	\end{itemize}
 	&  
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item Same as those mentioned in the multiserver part of this report
 	\end{itemize}
 	& 
 	\begin{itemize}[leftmargin=*]
-		\item 
+		\item Same as those mentioned in the multiserver part of this report
 	\end{itemize}
 	\\
 	\hline
