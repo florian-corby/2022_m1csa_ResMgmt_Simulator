@@ -2,8 +2,11 @@
 % ===================  PREAMBULE ====================== %
 % ===================================================== %
 
-\documentclass[a4paper, french]{article}
+\documentclass[a4paper, french]{report}
 \usepackage{config}
+\renewcommand\thesection{\arabic{section}}
+%\renewcommand\thepart{\arabic{part}}
+\counterwithout{section}{chapter}
 
 % ===================================================== %
 % ===================================================== %
@@ -49,5 +52,7 @@
 %%% ------------------ Début TP ------------------ %%%
 %%% ---------------------------------------------- %%%
 
-\subfile{./content.tex}
+\subfile{./part1.tex}
+\subfile{./part2.tex}
+\subfile{./part3.tex}
 \end{document}

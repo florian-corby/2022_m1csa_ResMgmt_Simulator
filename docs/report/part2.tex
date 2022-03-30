@@ -1,0 +1,120 @@
+\documentclass[./report.tex]{subfiles}
+%\documentclass[../../../CR/pac.tex]{subfiles}
+
+\begin{document}
+
+\part{Multiserver Scheduling}
+
+%% ===============================
+\section{EDF}
+\subsection{Implementation}
+
+\subsection{Scheduling results}
+\begin{figure}[!h]
+	\center
+	\includegraphics[scale=0.5]{test_multiServer_edf.png}
+	\caption{Output schedule produced by the EDF scheduling algorithm on multiple servers}
+	\label{fig:multiServer_edf} 
+\end{figure}
+
+Which corresponds to following file (<jobID, serverID, startDate, endDate, frequency>):
+\lstinputlisting[style=txt, caption={Detail of the scheduling result}]{test_multiServer_edf.txt}
+
+\newpage
+\subsection{Metrics}
+\begin{lstlisting}[style=txt, caption={Metrics for EDF on multiple servers}]
+################ SCHEDULE METRICS ################
+
+>> Scheduling Metrics: 
+- Total Makespan: 126.0
+- Nb Deadline Misses: 0
+- Max Tardiness: 0.0
+- Average Tardiness: 0.0
+- Late Jobs: 
+
+>> Servers Metrics: 
+- Servers work load:
+Server #0 : 55.0
+Server #1 : 31.0
+Server #2 : 25.0
+Server #3 : 15.0
+
+>> Energy Metrics: 
+- Total Consumption: 4077.777777777775
+- Max Consumption: 144.44444444444446
+- Average Consumption: 1019.4444444444438
+- Consumption per Server: 
+Server #0 : 1222.2222222222208
+Server #1 : 1550.0
+Server #2 : 555.5555555555555
+Server #3 : 750.0
+
+##################################################
+\end{lstlisting}
+
+
+%% ===============================
+\newpage
+\section{RMS}
+\subsection{Implementation}
+
+\subsection{Scheduling results}
+\begin{figure}[!h]
+	\center
+	\includegraphics[scale=0.5]{test_multiServer_rms.png}
+	\caption{Output schedule produced by the RMS scheduling algorithm on multiple servers}
+	\label{fig:multiServer_rms} 
+\end{figure}
+
+Which corresponds to following file (<jobID, serverID, startDate, endDate, frequency>):
+\lstinputlisting[style=txt, caption={Detail of the scheduling result}]{test_multiServer_rms.txt}
+
+\newpage
+\subsection{Metrics}
+\begin{lstlisting}[style=txt, caption={Metrics for RMS on multiple servers}]
+################ SCHEDULE METRICS ################
+
+>> Scheduling Metrics: 
+- Total Makespan: 126.0
+- Nb Deadline Misses: 1
+- Max Tardiness: 6.0
+- Average Tardiness: 6.0
+- Late Jobs: 
+[Job: J8{11.0a/0.0u/5.0rd/16.0ad/0.0p} | Tardiness: 6.0 ]
+
+>> Servers Metrics: 
+- Servers work load:
+Server #0 : 65.0
+Server #1 : 17.0
+Server #2 : 25.0
+Server #3 : 19.0
+
+>> Energy Metrics: 
+- Total Consumption: 3799.999999999997
+- Max Consumption: 144.44444444444446
+- Average Consumption: 949.9999999999992
+- Consumption per Server: 
+Server #0 : 1444.4444444444425
+Server #1 : 850.0
+Server #2 : 555.5555555555555
+Server #3 : 950.0
+
+##################################################
+\end{lstlisting}
+
+
+%% ===============================
+\newpage
+\section{Comparison Table}
+
+\begin{tabular}{|m{8em}|m{12em}|m{12em}|m{12em}|} 
+	\hline 
+	\textbf{Algorithm} & \textbf{Pros} & \textbf{Cons} & \textbf{Possible Uses} \\ 
+	\hline
+	EDF &  &  & \\
+	\hline
+	RMS &  &  & \\
+	\hline
+\end{tabular}
+
+\end{document}

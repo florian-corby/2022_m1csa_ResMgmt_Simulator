@@ -1,0 +1,241 @@
+\documentclass[./report.tex]{subfiles}
+%\documentclass[../../../CR/pac.tex]{subfiles}
+
+\begin{document}
+
+\part{Monoserver Scheduling}
+
+%% ===============================
+\section{FIFO}
+\subsection{Implementation}
+
+\subsection{Scheduling results}
+\begin{figure}[!h]
+	\center
+	\includegraphics[scale=0.5]{test_monoServer_fifo.png}
+	\caption{Output schedule produced by the FIFO scheduling algorithm on one server}
+	\label{fig:monoServer_fifo} 
+\end{figure}
+
+Which corresponds to following file (<jobID, serverID, startDate, endDate, frequency>):
+\lstinputlisting[style=txt, caption={Detail of the scheduling result}]{test_monoServer_fifo.txt}
+
+\newpage
+\subsection{Metrics}
+\begin{lstlisting}[style=txt, caption={Metrics for FIFO on a single server}]
+################ SCHEDULE METRICS ################
+
+>> Scheduling Metrics: 
+- Total Makespan: 126.0
+- Nb Deadline Misses: 11
+- Max Tardiness: 69.0
+- Average Tardiness: 36.63636363636363
+- Late Jobs: 
+[Job: J6{6.0a/0.0u/30.0rd/36.0ad/100.0p} | Tardiness: 29.0 ]
+[Job: J2{3.0a/0.0u/10.0rd/13.0ad/10.0p} | Tardiness: 8.0 ]
+[Job: J2{13.0a/0.0u/10.0rd/23.0ad/10.0p} | Tardiness: 68.0 ]
+[Job: J8{11.0a/0.0u/5.0rd/16.0ad/0.0p} | Tardiness: 64.0 ]
+[Job: J4{5.0a/0.0u/30.0rd/35.0ad/0.0p} | Tardiness: 6.0 ]
+[Job: J7{10.0a/0.0u/25.0rd/35.0ad/50.0p} | Tardiness: 40.0 ]
+[Job: J7{60.0a/0.0u/25.0rd/85.0ad/50.0p} | Tardiness: 21.0 ]
+[Job: J1{0.0a/0.0u/10.0rd/10.0ad/20.0p} | Tardiness: 5.0 ]
+[Job: J5{6.0a/0.0u/12.0rd/18.0ad/0.0p} | Tardiness: 27.0 ]
+[Job: J9{11.0a/0.0u/5.0rd/16.0ad/0.0p} | Tardiness: 69.0 ]
+[Job: J1{20.0a/0.0u/10.0rd/30.0ad/20.0p} | Tardiness: 66.0 ]
+
+>> Servers Metrics: 
+- Servers work load:
+Server #0 : 126.0
+
+>> Energy Metrics: 
+- Total Consumption: 2799.999999999995
+- Max Consumption: 22.22222222222222
+- Average Consumption: 2799.999999999995
+- Consumption per Server: 
+Server #0 : 2799.999999999995
+
+##################################################
+\end{lstlisting}
+
+
+%% ===============================
+\newpage
+\section{Round Robin}
+\subsection{Implementation}
+
+\subsection{Scheduling results}
+\begin{figure}[!h]
+	\center
+	\includegraphics[scale=0.5]{test_monoServer_rr.png}
+	\caption{Output schedule produced by the Round Robin scheduling algorithm on one server}
+	\label{fig:monoServer_rr} 
+\end{figure}
+
+Which corresponds to following file (<jobID, serverID, startDate, endDate, frequency>):
+\lstinputlisting[style=txt, caption={Detail of the scheduling result}]{test_monoServer_rr.txt}
+
+
+\newpage
+\subsection{Metrics}
+\begin{lstlisting}[style=txt, caption={Metrics for Round Robin on a single server}]
+################ SCHEDULE METRICS ################
+
+>> Scheduling Metrics: 
+- Total Makespan: 126.0
+- Nb Deadline Misses: 13
+- Max Tardiness: 70.0
+- Average Tardiness: 43.07692307692308
+- Late Jobs: 
+[Job: J0{0.0a/0.0u/15.0rd/15.0ad/0.0p} | Tardiness: 48.0 ]
+[Job: J9{11.0a/0.0u/5.0rd/16.0ad/0.0p} | Tardiness: 53.0 ]
+[Job: J7{10.0a/0.0u/25.0rd/35.0ad/50.0p} | Tardiness: 55.0 ]
+[Job: J5{6.0a/0.0u/12.0rd/18.0ad/0.0p} | Tardiness: 19.0 ]
+[Job: J8{11.0a/0.0u/5.0rd/16.0ad/0.0p} | Tardiness: 52.0 ]
+[Job: J1{0.0a/0.0u/10.0rd/10.0ad/20.0p} | Tardiness: 21.0 ]
+[Job: J3{4.0a/0.0u/30.0rd/34.0ad/0.0p} | Tardiness: 48.0 ]
+[Job: J4{5.0a/0.0u/30.0rd/35.0ad/0.0p} | Tardiness: 49.0 ]
+[Job: J2{13.0a/0.0u/10.0rd/23.0ad/10.0p} | Tardiness: 48.0 ]
+[Job: J1{20.0a/0.0u/10.0rd/30.0ad/20.0p} | Tardiness: 48.0 ]
+[Job: J2{3.0a/0.0u/10.0rd/13.0ad/10.0p} | Tardiness: 32.0 ]
+[Job: J6{6.0a/0.0u/30.0rd/36.0ad/100.0p} | Tardiness: 70.0 ]
+[Job: J7{60.0a/0.0u/25.0rd/85.0ad/50.0p} | Tardiness: 17.0 ]
+
+>> Servers Metrics: 
+- Servers work load:
+Server #0 : 126.0
+
+>> Energy Metrics: 
+- Total Consumption: 2799.999999999995
+- Max Consumption: 22.22222222222222
+- Average Consumption: 2799.999999999995
+- Consumption per Server: 
+Server #0 : 2799.999999999995
+
+##################################################
+\end{lstlisting}
+
+
+%% ===============================
+\newpage
+\section{EDF}
+\subsection{Implementation}
+
+\subsection{Scheduling results}
+\begin{figure}[!h]
+	\center
+	\includegraphics[scale=0.5]{test_monoServer_edf.png}
+	\caption{Output schedule produced by the EDF scheduling algorithm on one server}
+	\label{fig:monoServer_edf} 
+\end{figure}
+
+Which corresponds to following file (<jobID, serverID, startDate, endDate, frequency>):
+\lstinputlisting[style=txt, caption={Detail of the scheduling result}]{test_monoServer_edf.txt}
+
+\newpage
+\subsection{Metrics}
+\begin{lstlisting}[style=txt, caption={Metrics for EDF on a single server}]
+################ SCHEDULE METRICS ################
+
+>> Scheduling Metrics: 
+- Total Makespan: 126.0
+- Nb Deadline Misses: 11
+- Max Tardiness: 60.0
+- Average Tardiness: 23.363636363636363
+- Late Jobs: 
+[Job: J2{13.0a/0.0u/10.0rd/23.0ad/10.0p} | Tardiness: 18.0 ]
+[Job: J6{6.0a/0.0u/30.0rd/36.0ad/100.0p} | Tardiness: 60.0 ]
+[Job: J3{4.0a/0.0u/30.0rd/34.0ad/0.0p} | Tardiness: 22.0 ]
+[Job: J5{6.0a/0.0u/12.0rd/18.0ad/0.0p} | Tardiness: 17.0 ]
+[Job: J0{0.0a/0.0u/15.0rd/15.0ad/0.0p} | Tardiness: 6.0 ]
+[Job: J9{11.0a/0.0u/5.0rd/16.0ad/0.0p} | Tardiness: 15.0 ]
+[Job: J7{60.0a/0.0u/25.0rd/85.0ad/50.0p} | Tardiness: 21.0 ]
+[Job: J4{5.0a/0.0u/30.0rd/35.0ad/0.0p} | Tardiness: 31.0 ]
+[Job: J8{11.0a/0.0u/5.0rd/16.0ad/0.0p} | Tardiness: 10.0 ]
+[Job: J7{10.0a/0.0u/25.0rd/35.0ad/50.0p} | Tardiness: 41.0 ]
+[Job: J1{20.0a/0.0u/10.0rd/30.0ad/20.0p} | Tardiness: 16.0 ]
+
+>> Servers Metrics: 
+- Servers work load:
+Server #0 : 126.0
+
+>> Energy Metrics: 
+- Total Consumption: 2799.999999999995
+- Max Consumption: 22.22222222222222
+- Average Consumption: 2799.999999999995
+- Consumption per Server: 
+Server #0 : 2799.999999999995
+
+##################################################
+\end{lstlisting}
+
+
+%% ===============================
+\newpage
+\section{RMS}
+\subsection{Implementation}
+
+\subsection{Scheduling results}
+\begin{figure}[!h]
+	\center
+	\includegraphics[scale=0.5]{test_monoServer_rms.png}
+	\caption{Output schedule produced by the RMS scheduling algorithm on one server}
+	\label{fig:monoServer_rms} 
+\end{figure}
+
+Which corresponds to following file (<jobID, serverID, startDate, endDate, frequency>):
+\lstinputlisting[style=txt, caption={Detail of the scheduling result}]{test_monoServer_rms.txt}
+
+\newpage
+\subsection{Metrics}
+\begin{lstlisting}[style=txt, caption={Metrics for RMS on a single server}]
+################ SCHEDULE METRICS ################
+
+>> Scheduling Metrics: 
+- Total Makespan: 126.0
+- Nb Deadline Misses: 8
+- Max Tardiness: 71.0
+- Average Tardiness: 50.25
+- Late Jobs: 
+[Job: J4{5.0a/0.0u/30.0rd/35.0ad/0.0p} | Tardiness: 71.0 ]
+[Job: J1{0.0a/0.0u/10.0rd/10.0ad/20.0p} | Tardiness: 1.0 ]
+[Job: J6{6.0a/0.0u/30.0rd/36.0ad/100.0p} | Tardiness: 16.0 ]
+[Job: J8{11.0a/0.0u/5.0rd/16.0ad/0.0p} | Tardiness: 61.0 ]
+[Job: J5{6.0a/0.0u/12.0rd/18.0ad/0.0p} | Tardiness: 68.0 ]
+[Job: J9{11.0a/0.0u/5.0rd/16.0ad/0.0p} | Tardiness: 66.0 ]
+[Job: J0{0.0a/0.0u/15.0rd/15.0ad/0.0p} | Tardiness: 57.0 ]
+[Job: J3{4.0a/0.0u/30.0rd/34.0ad/0.0p} | Tardiness: 62.0 ]
+
+>> Servers Metrics: 
+- Servers work load:
+Server #0 : 126.0
+
+>> Energy Metrics: 
+- Total Consumption: 2799.999999999995
+- Max Consumption: 22.22222222222222
+- Average Consumption: 2799.999999999995
+- Consumption per Server: 
+Server #0 : 2799.999999999995
+
+##################################################
+\end{lstlisting}
+
+
+%% ===============================
+\newpage
+\section{Comparison Table}
+
+\begin{tabular}{|m{8em}|m{12em}|m{12em}|m{12em}|} 
+	\hline 
+	\textbf{Algorithm} & \textbf{Pros} & \textbf{Cons} & \textbf{Possible Uses} \\ 
+	\hline
+	FIFO &  &  & \\
+	\hline
+	Round Robin &  &  & \\
+	\hline
+	EDF &  &  & \\
+	\hline
+	RMS &  &  & \\
+	\hline
+\end{tabular}
+
+\end{document}
